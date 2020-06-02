@@ -2,6 +2,8 @@ import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
 import { join } from 'path';
+import * as nunjucks from 'nunjucks';
+
 const port = 8080;
 
 async function bootstrap() {
