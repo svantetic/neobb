@@ -8,10 +8,23 @@ const port = 8080;
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-
+  
+  const renderEngine = nunjucks.configure(
+    join(__dirname, '../src', 'views'),
+    {
+      autoescape: true,
+      throwOnUndefined: false,
+      trimBlocks: false,
+      lstripBlocks: false,
+      watch: true,
+      noCache: process.env.NODE_ENV === "local" ? true : false,
+      express: app
+    }
+  );
+  app.engine('njk', renderEngine.render);
   app.useStaticAssets(join(__dirname, '..', 'public'));
-  app.setBaseViewsDir(join(__dirname, '../src', 'views'));
-  app.setViewEngine('hbs');
+  app.setViewEngine('njk');
+  app.set('view cache', true);
   console.log('staring');
   await app.listen(port);
 
