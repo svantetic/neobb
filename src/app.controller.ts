@@ -8,7 +8,7 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  @Render('index')
+  @Render('index/index')
   root() {
     return {
       message: 'Witam na forum',
@@ -17,8 +17,8 @@ export class AppController {
   }
 
   @Get('admin')
-  @UseGuards(AuthGuard())
-  @Render('admin')
+  // @UseGuards(AuthGuard())
+  @Render('admin/index')
   adminRoot() {
     return {
       message: 'Admin area',
