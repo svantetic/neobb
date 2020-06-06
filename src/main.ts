@@ -16,8 +16,7 @@ async function bootstrap() {
       throwOnUndefined: false,
       trimBlocks: false,
       lstripBlocks: false,
-      watch: true,
-      noCache: process.env.NODE_ENV === "local" ? true : false,
+      noCache: true,
       express: app
     }
   );
@@ -27,8 +26,6 @@ async function bootstrap() {
     redirect: false
   })
   app.setViewEngine('njk');
-  app.set('view cache', true);
-  console.log('staring');
   await app.listen(port);
 
 }
