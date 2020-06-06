@@ -22,7 +22,10 @@ async function bootstrap() {
     }
   );
   app.engine('njk', renderEngine.render);
-  app.useStaticAssets(join(__dirname, '..', 'public'));
+  app.useStaticAssets(join(__dirname, '../public'), {
+    index: false,
+    redirect: false
+  })
   app.setViewEngine('njk');
   app.set('view cache', true);
   console.log('staring');
