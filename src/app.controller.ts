@@ -16,6 +16,12 @@ export class AppController {
     };
   }
 
+  @Get('terms')
+  @Render('terms/index')
+  terms() {
+    return;
+  }
+
   @Get('admin')
   // @UseGuards(AuthGuard())
   @Render('admin/index')
