@@ -9,12 +9,12 @@
 </head>
 <body>
     {% include "./partials/header.njk" %}
-    <h1>
-        {{ message }}
-    </h1>
-
+    {% include "./partials/navigation.njk" %}
+    
     {% block content %}
-        content
+        <div class="container mx-auto">
+            kontent
+        </div>
     {% endblock %}
 </body>
 </html>
