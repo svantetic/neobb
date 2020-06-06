@@ -8,7 +8,7 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  @Render('index/index')
+  @Render('client/index/index')
   root() {
     return {
       message: 'Witam na forum',
@@ -17,8 +17,14 @@ export class AppController {
   }
 
   @Get('terms')
-  @Render('terms/index')
+  @Render('client/terms/index')
   terms() {
+    return;
+  }
+
+  @Get('users')
+  @Render('client/users/index')
+  users() {
     return;
   }
 
