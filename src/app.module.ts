@@ -10,6 +10,7 @@ import { SectionModule } from './modules/section.module';
 import { PassportModule } from '@nestjs/passport';
 import { ThreadModule } from './modules/thread.module';
 import * as path from 'path';
+import { AdminModule } from './modules/admin.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import * as path from 'path';
     SegmentModule,
     SectionModule,
     ThreadModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],

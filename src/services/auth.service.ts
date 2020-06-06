@@ -2,7 +2,7 @@ import { Injectable, NotFoundException, HttpStatus, ForbiddenException } from '@
 import { UserService } from './user.service';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '../model/user.entity';
-import { UserDto } from '../dto/UserDto';
+import { UserDto, AdminUserDto } from '../dto/UserDto';
 import * as crypto from 'crypto';
 import * as bcrypt from 'bcrypt';
 
@@ -17,13 +17,26 @@ export class AuthService {
     return await this.userService.findByEmail(payload);
   }
 
+  public async validateByName(payload: string): Promise<User> {
+    return await this.userService.findByName(payload);
+  }
+
   public async register(user: UserDto): Promise<any> {
       return this.userService.create(user);
   }
 
-  public async login(user: UserDto): Promise <any | { status: number }>{
-      const userData = await this.validate(user.email);
-
+  public async login(user: UserDto | AdminUserDto): Promise <any | { status: number }>{
+      let userData: {
+          email?: string;
+          name?: string;
+          password?: string;
+      } = {};
+      if (user.email) {
+          userData = await this.validate(user.email);
+      } else if (user.name) {
+          userData = await this.validateByName(user.name);
+      }
+      console.log(userData);
       if (!userData) {
           return new NotFoundException;
       }
@@ -36,8 +49,12 @@ export class AuthService {
       if (!isPasswordMatching) {
           return new ForbiddenException('Wrong password');
       }
-
-      const payload = `${userData.email}`;
+      let payload;
+      if (userData.email) {
+            payload = `${userData.email}`;
+      } else {
+          payload = userData.name;
+      }
       const accessToken = this.jwtService.sign(payload);
 
       return {

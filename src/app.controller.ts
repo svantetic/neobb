@@ -27,15 +27,5 @@ export class AppController {
   users() {
     return;
   }
-
-  @Get('admin')
-  // @UseGuards(AuthGuard())
-  @Render('admin/index')
-  adminRoot() {
-    return {
-      message: 'Admin area',
-      forumName: this.forumName,
-    }
-  }
   
 }
