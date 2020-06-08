@@ -36,32 +36,25 @@ export class AuthService {
       } else if (user.name) {
           userData = await this.validateByName(user.name);
       }
-      console.log(userData);
+      
       if (!userData) {
           return new NotFoundException;
       }
-
-      console.log(user);
-      console.log(userData);
       
       const isPasswordMatching = await bcrypt.compare(user.password, userData.password);
 
       if (!isPasswordMatching) {
           return new ForbiddenException('Wrong password');
       }
-      let payload;
-      if (userData.email) {
-            payload = `${userData.email}`;
-      } else {
-          payload = userData.name;
-      }
-      const accessToken = this.jwtService.sign(payload);
 
-      return {
-          expires_in: 3600,
-          access_token: accessToken,
-          user_id: payload,
-          status: HttpStatus.OK,
-      };
+      return user.name;
+    //   const accessToken = this.jwtService.sign(payload);
+
+    //   return {
+    //       expires_in: 3600,
+    //       access_token: accessToken,
+    //       user_id: payload,
+    //       status: HttpStatus.OK,
+    //   };
   }
 }
