@@ -11,6 +11,13 @@
     {% include "./client/partials/header.njk" %}
     {% include "./client/partials/navigation.njk" %}
     
+    {% if (flashMessage | length) %}
+        {% block flash %}
+            <div class="bg-red-600 container mx-auto text-white py-4 px-4 w-1/4 my-6">
+                {{ flashMessage }}
+            </div>
+        {% endblock %}
+    {% endif %}
     {% block content %}
         
     {% endblock %}
