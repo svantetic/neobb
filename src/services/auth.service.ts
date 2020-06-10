@@ -5,6 +5,7 @@ import { User } from '../model/user.entity';
 import { UserDto, AdminUserDto } from '../dto/UserDto';
 import * as crypto from 'crypto';
 import * as bcrypt from 'bcrypt';
+import { Response } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -25,21 +26,17 @@ export class AuthService {
       return this.userService.create(user);
   }
 
-  public async login(user: UserDto | AdminUserDto): Promise <any | { status: number }>{
-      let userData: {
-          email?: string;
-          name?: string;
-          password?: string;
-      } = {};
-      if (user.email) {
-          userData = await this.validate(user.email);
-      } else if (user.name) {
-          userData = await this.validateByName(user.name);
-      }
+  public async login(user: UserDto, res: Response, destination: string): Promise<boolean | ForbiddenException> {
+      const userData = await this.validateByName(user.name);
+      console.log('userdata', userData);
       
       if (!userData) {
-          return new NotFoundException;
+        return new ForbiddenException('Wrong user');
+          
       }
+
+      console.log('is password matching');
+
       
       const isPasswordMatching = await bcrypt.compare(user.password, userData.password);
 
@@ -47,14 +44,6 @@ export class AuthService {
           return new ForbiddenException('Wrong password');
       }
 
-      return user.name;
-    //   const accessToken = this.jwtService.sign(payload);
-
-    //   return {
-    //       expires_in: 3600,
-    //       access_token: accessToken,
-    //       user_id: payload,
-    //       status: HttpStatus.OK,
-    //   };
-  }
+      return true;
+    }
 }
