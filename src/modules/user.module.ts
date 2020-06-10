@@ -9,18 +9,16 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from '../strategy/jwt.strategy';
 import { ConfigService, ConfigModule } from 'nestjs-config';
 import * as path from 'path';
+import { LocalStrategy } from 'src/strategy/local.strategy';
 @Module({
   imports: [
     ConfigModule,
     ConfigModule.load(path.resolve(__dirname, 'config', '**', '!(*.d).{ts,js}')),
     TypeOrmModule.forFeature([User]),
-    JwtModule.register({
-      // TODO: remove temp key and use .env
-      secret: 'temporary_key',
-    }),
-    PassportModule.register({ defaultStrategy: 'jwt' }),
+    PassportModule.register({ defaultStrategy: 'local' }),
   ],
   controllers: [UserController],
-  providers: [UserService, AuthService, JwtStrategy],
+  providers: [UserService, AuthService, LocalStrategy],
+  exports: [UserService]
 })
 export class UserModule {}
