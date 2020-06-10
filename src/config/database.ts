@@ -9,9 +9,9 @@ const ORMConfig = {
     entities: [__dirname + '/../**/**.entity{.ts,.js}'],
     synchronize: process.env.TYPEORM_SYNCHRONIZE === 'true',
     migrationsTableName: "custom_migration_table",
-    migrations: ["migration/*.ts"],
+    migrations: ["src/migration/*.ts"],
     cli: {
-        migrationsDir: "migration"
+        migrationsDir: "src/migration"
     },
 };
 
