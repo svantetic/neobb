@@ -1,5 +1,5 @@
 import { Controller, Get, Render } from '@nestjs/common';
-import { PostService } from './post.service';
+import { PostService } from '../services/post.service';
 import { Post } from '../model/post.entity';
 @Controller('post')
 export class PostController {
