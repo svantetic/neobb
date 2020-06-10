@@ -18,18 +18,36 @@ export class ThreadService {
     ) {
 
     }
-
-    async findById(id: number | string): Promise<Thread> {
-        return await this.repository.createQueryBuilder('thread')
-            .leftJoin('thread.posts', 'post')
-            .leftJoin('thread.author', 'author')
-            .leftJoin('post.author', 'postauthor')
-            .addSelect('post')
-            .addSelect(['author.name', 'author.id', 'author.avatar'])
-            .addSelect(['postauthor.name', 'postauthor.id', 'postauthor.avatar'])
-            .where('thread.id = :id', { id })
-            .getOne();
+    async findBySection(sectionId: number | string): Promise<Thread[]> {
+        return await this.repository.find({
+            relations: ['author'],
+            select: ['name'],
+            where: {
+                section: sectionId,
+            }
+        })
     }
+
+    async findOne(id: number | string): Promise<Thread> {
+        return await this.repository.findOne({
+            relations: ['author'],
+            select: ['content', 'id', 'name', 'section'],
+            where: {
+                id,
+            }
+        })
+    }
+    // async findById(id: number | string): Promise<Thread> {
+    //     return await this.repository.createQueryBuilder('thread')
+    //         .leftJoin('thread.posts', 'post')
+    //         .leftJoin('thread.author', 'author')
+    //         .leftJoin('post.author', 'postauthor')
+    //         .addSelect('post')
+    //         .addSelect(['author.username', 'author.id', 'author.avatar'])
+    //         .addSelect(['postauthor.username', 'postauthor.id', 'postauthor.avatar'])
+    //         .where('thread.id = :id', { id })
+    //         .getOne();
+    // }
 
     async findAll() {
         return this.repository.find();

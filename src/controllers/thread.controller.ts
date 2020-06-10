@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, HttpStatus, UsePipes, ConflictException, UseGuards, Req, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, HttpStatus, UsePipes, ConflictException, UseGuards, Req, Param, Render } from '@nestjs/common';
 import { ThreadService } from '../services/thread.service';
 import { Thread } from '../model/thread.entity';
 import { AuthGuard } from '@nestjs/passport';
@@ -16,8 +16,14 @@ export class ThreadController {
     ) {}
 
     @Get(':id')
-    async findOne(@Param('id') id): Promise<Thread> {
-        return await this.threadService.findById(id);
+    @Render('client/thread/index')
+    async findOne(@Param('id') id: string | number): Promise<{ thread: any }> {
+        const thread = await this.threadService.findOne(id);
+        console.log(thread);
+        
+        return {
+            thread,
+        }
     }
 
     @Get()

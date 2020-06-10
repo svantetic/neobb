@@ -26,9 +26,7 @@ export class SectionService {
     }
 
     async findById(id: number | string): Promise<Section> {
-        return await this.repository.findOne(id, {
-            relations: ['threads'],
-        });
+        return await this.repository.findOne(id);
     }
 
     async create(section: Section) {

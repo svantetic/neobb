@@ -1,19 +1,27 @@
-import { Controller, Get, Post, Body, HttpStatus, UsePipes, ConflictException, UseGuards, BadRequestException, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, HttpStatus, UsePipes, ConflictException, UseGuards, BadRequestException, Param, Render } from '@nestjs/common';
 import { Section } from '../model/section.entity';
 import { SectionService } from '../services/section.service';
 import { AuthGuard } from '@nestjs/passport';
+import { ThreadService } from 'src/services/thread.service';
 
 @Controller('section')
 export class SectionController {
-    constructor(private readonly service: SectionService) {}
+    constructor(private readonly service: SectionService, private readonly threadService: ThreadService) {}
     @Get()
     async index(): Promise<Section[]> {
         return this.service.findAll();
     }
 
     @Get(':id')
-    async findOne(@Param('id') id): Promise<Section> {
-        return await this.service.findById(id);
+    @Render('client/section/index')
+    async findOne(@Param('id') id): Promise<any> {
+        const section = await this.service.findById(id);
+        const threads = await this.threadService.findBySection(section.id);
+        console.log(threads);
+        return {
+            section,
+            threads,
+        }
     }
 
     @Post()
