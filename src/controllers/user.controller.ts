@@ -1,9 +1,10 @@
-import { Controller, Get, Post, Body, HttpStatus, UsePipes, ConflictException } from '@nestjs/common';
+import { Controller, Get, Post, Body, HttpStatus, UsePipes, ConflictException, Res } from '@nestjs/common';
 import { UserService } from '../services/user.service';
 import { User } from '../model/user.entity';
 import { UserValidationPipePipe } from '../pipes/user-validation-pipe.pipe';
-import { UserDto, userSchema } from '../dto/UserDto';
+import { UserDto, userSchema, RegisterUserDto, registerUserSchema } from '../dto/UserDto';
 import { AuthService } from '../services/auth.service';
+import { Response } from 'express';
 
 @Controller('user')
 export class UserController {
@@ -16,13 +17,13 @@ export class UserController {
 
   @Post('login')
   @UsePipes(new UserValidationPipePipe(userSchema))
-  async login(@Body() user: UserDto) {
-    return this.authService.login(user);
+  async login(@Body() user: UserDto, @Res() res: Response) {
+    return this.authService.login(user, res, 'index');
   }
 
   @Post('register')
-  @UsePipes(new UserValidationPipePipe(userSchema))
-  async create(@Body() user: UserDto) {
+  @UsePipes(new UserValidationPipePipe(registerUserSchema))
+  async create(@Body() user: RegisterUserDto) {
     const userExists = await this.userService.emailExists(user.email);
 
     if (userExists) {

@@ -1,4 +1,4 @@
-import { Controller, Get, Render, Post, Body, HttpStatus, UsePipes, ConflictException, UseGuards, BadRequestException, Param, Res } from '@nestjs/common';
+import { Controller, Get, Render, Post, Body, HttpStatus, UsePipes, ConflictException, UseGuards, BadRequestException, Param, Res, Redirect } from '@nestjs/common';
 import { UserDto, userSchema, adminUserSchema, AdminUserDto } from 'src/dto/UserDto';
 import { UserService } from 'src/services/user.service';
 import { AuthService } from 'src/services/auth.service';
@@ -19,6 +19,11 @@ constructor(private readonly userService: UserService, private readonly authServ
   @Post('login')
   @UsePipes(new UserValidationPipePipe(adminUserSchema))
   async login(@Body() user: AdminUserDto, @Res() res: Response) {
+    const loggedIn = await this.authService.login(user, res, '/index');
+    if (loggedIn !== true) {
+      return res.redirect('/admin/login')
+    }
+
     return res.redirect('/admin/index');
   }
 

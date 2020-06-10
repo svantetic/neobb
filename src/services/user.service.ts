@@ -46,7 +46,6 @@ export class UserService {
     async create(userDto: UserDto): Promise<User> {
         const user = new User();
         user.avatar = '';
-        user.email = userDto.email;
         user.name = userDto.name;
         user.password = userDto.password;
 
