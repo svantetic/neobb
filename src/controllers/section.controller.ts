@@ -17,7 +17,7 @@ export class SectionController {
     }
 
     @Post()
-    @UseGuards(AuthGuard('jwt'))
+
     async create(@Body() section: Section) {
         const sectionExists = await this.service.exists(section);
 
