@@ -10,31 +10,31 @@ import { Response } from 'express';
 export class UserController {
   constructor(private readonly userService: UserService, private readonly authService: AuthService) {}
 
-  @Get()
-  async root() {
-    return this.userService.findAll();
-  }
+  // @Get()
+  // async root() {
+  //   return this.userService.findAll();
+  // }
 
-  @Post('login')
-  @UsePipes(new UserValidationPipePipe(userSchema))
-  async login(@Body() user: UserDto, @Res() res: Response) {
-    return this.authService.login(user, res, 'index');
-  }
+  // @Post('login')
+  // @UsePipes(new UserValidationPipePipe(userSchema))
+  // async login(@Body() user: UserDto, @Res() res: Response) {
+  //   return this.authService.login(user, res, 'index');
+  // }
 
-  @Post('register')
-  @UsePipes(new UserValidationPipePipe(registerUserSchema))
-  async create(@Body() user: RegisterUserDto) {
-    const userExists = await this.userService.emailExists(user.email);
+  // @Post('register')
+  // @UsePipes(new UserValidationPipePipe(registerUserSchema))
+  // async create(@Body() user: RegisterUserDto) {
+  //   const userExists = await this.userService.emailExists(user.email);
 
-    if (userExists) {
-      throw new ConflictException('User already exists');
-    }
+  //   if (userExists) {
+  //     throw new ConflictException('User already exists');
+  //   }
 
-    this.authService.register(user);
+  //   this.authService.register(user);
 
-    return {
-      statusCode: HttpStatus.OK,
-      message: 'User registed',
-    };
-  }
+  //   return {
+  //     statusCode: HttpStatus.OK,
+  //     message: 'User registed',
+  //   };
+  // }
 }
