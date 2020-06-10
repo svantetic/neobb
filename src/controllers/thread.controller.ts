@@ -21,7 +21,6 @@ export class ThreadController {
     }
 
     @Get()
-    @UseGuards(AuthGuard('jwt'))
     async index() {
         const threads = await this.threadService.findAll();
         return {
@@ -33,7 +32,6 @@ export class ThreadController {
     }
 
     @Post()
-    @UseGuards(AuthGuard('jwt'))
     async create(@Req() request, @Body() thread: ThreadDto) {
         const created = await this.threadService.create(request.user, thread);
         if (created) {

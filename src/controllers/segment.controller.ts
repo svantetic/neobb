@@ -12,7 +12,6 @@ export class SegmentController {
     }
 
     @Post()
-    @UseGuards(AuthGuard('jwt'))
     async create(@Body() segment: Segment) {
         const segmentExists = await this.service.exists(segment);
 
