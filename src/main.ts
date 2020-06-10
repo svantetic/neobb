@@ -32,10 +32,17 @@ async function bootstrap() {
     })
   );
 
+
   app.use(passport.initialize());
   app.use(passport.session());
   app.use(flash());
 
+  app.use(function(req, res, next) {
+    if (req.session.passport && req.session.passport.user) {
+      res.locals.user = req.session.passport.user;
+    }
+    next();   
+  });
   app.engine('njk', renderEngine.render);
   app.useStaticAssets(join(__dirname, '../public'), {
     index: false,
