@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert, Exclusion, ManyToOne, OneToMany } from 'typeorm';
 import * as crypto from 'crypto';
 import { ExclusionMetadata } from 'typeorm/metadata/ExclusionMetadata';
-import * as bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { Thread } from './thread.entity';
 import { Post } from './post.entity';
 
@@ -11,7 +11,7 @@ export class User {
     id: number;
 
     @Column()
-    name: string;
+    username: string;
 
     @Column({default: ''})
     avatar: string;
