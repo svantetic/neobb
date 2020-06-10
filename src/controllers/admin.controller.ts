@@ -13,7 +13,6 @@ export class AdminController {
 constructor(private readonly authService: AuthService) {}
 
   @Get('/login')
-  // @UseGuards(AuthGuard())
   @Render('admin/login')
   adminLogin() {
     return;
@@ -24,14 +23,15 @@ constructor(private readonly authService: AuthService) {}
   @UsePipes(new UserValidationPipePipe(adminUserSchema))
   async login(@Body() user: AdminUserDto, @Res() res: Response) {
     const loggedIn = await this.authService.validateUser(user);
-    if (loggedIn !== true) {
+   
+    if (loggedIn === null) {
       return res.redirect('/admin/login')
     }
 
-    return res.redirect('/admin/index');
+    return res.redirect('/admin/');
   }
 
-  // @UseGuards(AuthenticatedGuard)
+  @UseGuards(AuthenticatedGuard)
   @Get('/')
   @Render('admin/index')
   adminRoot() {
