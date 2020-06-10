@@ -26,11 +26,11 @@ export class UserService {
         });
     }
 
-    async findByName(name: string): Promise<User> {
+    async findByName(username: string): Promise<User> {
         return await this.userRepository.findOne({
-            select: ['email', 'password', 'name'],
+            select: ['email', 'password', 'username'],
             where: {
-                name
+                username
             }
         })
     }
@@ -46,7 +46,7 @@ export class UserService {
     async create(userDto: UserDto): Promise<User> {
         const user = new User();
         user.avatar = '';
-        user.name = userDto.name;
+        user.username = userDto.username;
         user.password = userDto.password;
 
         return await this.userRepository.save(user);
