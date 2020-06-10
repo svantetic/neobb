@@ -10,7 +10,7 @@ export class SegmentService {
         private repository: Repository<Segment>,
     ) {}
 
-    async findAll(withSections: boolean = true): Promise<Segment[]> {
+    async findAll(withSections = true): Promise<Segment[]> {
         const options = {
             relations: withSections ? ['sections'] : [],
         };

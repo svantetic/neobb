@@ -10,5 +10,6 @@ import { SegmentService } from '../services/segment.service';
   ],
   controllers: [SegmentController],
   providers: [SegmentService],
+  exports: [SegmentService],
 })
 export class SegmentModule {}
