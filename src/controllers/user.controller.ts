@@ -1,15 +1,34 @@
-import { Controller, Get, Post, Body, HttpStatus, UsePipes, ConflictException, Res } from '@nestjs/common';
+import { Controller, Get, Post, Body, HttpStatus, UsePipes, ConflictException, Res, Render, UseGuards, Req, UseFilters } from '@nestjs/common';
 import { UserService } from '../services/user.service';
 import { User } from '../model/user.entity';
 import { UserValidationPipePipe } from '../pipes/user-validation-pipe.pipe';
 import { UserDto, userSchema, RegisterUserDto, registerUserSchema } from '../dto/UserDto';
 import { AuthService } from '../services/auth.service';
-import { Response } from 'express';
+import { Response, Request } from 'express';
+import { LoginGuard } from 'src/guards/login.guard';
+import { HttpExceptionFilter } from 'src/filters/http-exception.filter';
 
-@Controller('user')
+@Controller()
 export class UserController {
   constructor(private readonly userService: UserService, private readonly authService: AuthService) {}
 
+  @Get('login')
+  @Render('client/login/index')
+  loginForm(@Req() request: Request,) {
+    return { 
+      flashMessage: request.flash('loginError') 
+    };
+  }
+
+  @UseGuards(LoginGuard)
+  @Post('login')
+  @UseFilters(new HttpExceptionFilter)
+  login(@Req() request: any, @Res() response: Response): void {
+    if (request.session.passport.user) {
+      return response.redirect('/');
+    }
+  }
+  
   // @Get()
   // async root() {
   //   return this.userService.findAll();
