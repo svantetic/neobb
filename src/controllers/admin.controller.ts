@@ -4,10 +4,13 @@ import { UserService } from 'src/services/user.service';
 import { AuthService } from 'src/services/auth.service';
 import { UserValidationPipePipe } from 'src/pipes/user-validation-pipe.pipe';
 import { Response, response } from 'express';
+import { AuthGuard } from '@nestjs/passport';
+import { LoginGuard } from 'src/guards/login.guard';
+import { AuthenticatedGuard } from 'src/guards/authenticated.guard';
 
 @Controller('admin')
 export class AdminController {
-constructor(private readonly userService: UserService, private readonly authService: AuthService) {}
+constructor(private readonly authService: AuthService) {}
 
   @Get('/login')
   // @UseGuards(AuthGuard())
@@ -16,10 +19,11 @@ constructor(private readonly userService: UserService, private readonly authServ
     return;
   }
 
+  @UseGuards(LoginGuard)
   @Post('login')
   @UsePipes(new UserValidationPipePipe(adminUserSchema))
   async login(@Body() user: AdminUserDto, @Res() res: Response) {
-    const loggedIn = await this.authService.login(user, res, '/index');
+    const loggedIn = await this.authService.validateUser(user);
     if (loggedIn !== true) {
       return res.redirect('/admin/login')
     }
@@ -27,7 +31,8 @@ constructor(private readonly userService: UserService, private readonly authServ
     return res.redirect('/admin/index');
   }
 
-  @Get('index')
+  // @UseGuards(AuthenticatedGuard)
+  @Get('/')
   @Render('admin/index')
   adminRoot() {
     return {
