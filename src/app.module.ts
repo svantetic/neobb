@@ -11,6 +11,8 @@ import { PassportModule } from '@nestjs/passport';
 import { ThreadModule } from './modules/thread.module';
 import * as path from 'path';
 import { AdminModule } from './modules/admin.module';
+import { LocalStrategy } from './strategy/local.strategy';
+import { AuthModule } from './modules/auth.module';
 
 @Module({
   imports: [
@@ -20,7 +22,7 @@ import { AdminModule } from './modules/admin.module';
       useFactory: (config: ConfigService) => config.get('database'),
       inject: [ConfigService],
     }),
-    PassportModule.register({ defaultStrategy: 'jwt' }),
+    AuthModule,
     PostModule,
     UserModule,
     SegmentModule,
