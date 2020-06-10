@@ -8,8 +8,8 @@
     <tbody>
     {% for section in segment.sections %}
         <tr>
-            <td class="border w-3/4 px-4 py-2">
-                <p class="text-lg"><a href="/section/{{section.id}}">{{section.name}}</a></p>
+            <td class="border w-3/4 px-4 py-6">
+                <p class="text-lg"><a href="/section/{{section.id}}" class="hover:underline">{{section.name}}</a></p>
                 <p class="text-gray-700 text-sm">{{section.description}}</p>
             </td>
             <td class="border w-1/4 px-4 py-2">no posts yet</td>

@@ -1,0 +1,23 @@
+{% extends "../../base.njk" %}
+
+{% block content %}
+<div class="container mx-auto">
+    <div class="card my-12 shadow-md">
+        <div class="px-4 py-2">
+            <p class="text-lg">
+                {{ section.name }}
+            </p>
+            <p class="text-sm">
+                {{ section.description }}
+            </p>
+        </div>
+        <div class="px-4 py-4">
+            {% if threads | length %}
+                {% include "./thread.njk" %}
+            {% else %}
+                <p>No threads yet :<</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
