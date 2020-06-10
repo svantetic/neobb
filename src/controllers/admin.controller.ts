@@ -1,9 +1,9 @@
-import { Controller, Get, Render, Post, Body, HttpStatus, UsePipes, ConflictException, UseGuards, BadRequestException, Param, Res, Redirect } from '@nestjs/common';
+import { Controller, Get, Render, Post, Body, HttpStatus, UsePipes, ConflictException, UseGuards, BadRequestException, Param, Res, Redirect, Request } from '@nestjs/common';
 import { UserDto, userSchema, adminUserSchema, AdminUserDto } from 'src/dto/UserDto';
 import { UserService } from 'src/services/user.service';
 import { AuthService } from 'src/services/auth.service';
 import { UserValidationPipePipe } from 'src/pipes/user-validation-pipe.pipe';
-import { Response, response } from 'express';
+import { Response } from 'express';
 import { AuthGuard } from '@nestjs/passport';
 import { LoginGuard } from 'src/guards/login.guard';
 import { AuthenticatedGuard } from 'src/guards/authenticated.guard';
@@ -38,6 +38,12 @@ constructor(private readonly authService: AuthService) {}
     return {
       message: 'Welcome back'
     }
+  }
+
+  @Get('/logout')
+  logout(@Request() req, @Res() response: Response) {
+    req.logout();
+    return response.redirect('/');
   }
 
 
