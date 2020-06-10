@@ -1,5 +1,5 @@
 import {MigrationInterface, QueryRunner} from 'typeorm';
-import * as bcrypt from 'bcrypt';
+import bcrypt = require('bcryptjs');
 
 export class SeedUsers1562955175716 implements MigrationInterface {
 
