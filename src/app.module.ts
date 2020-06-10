@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { PostModule } from './domain/post.module';
+import { PostModule } from './model/post.module';
 import { UserModule } from './modules/user.module';
 import { ConfigModule, ConfigService } from 'nestjs-config';
 import { SegmentModule } from './modules/segment.module';
