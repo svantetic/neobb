@@ -2,6 +2,28 @@
 
 {% block content %}
     <main class="container mx-auto">
-        user table
+    <p class="py-4 px-4 mb-4">
+        There are <b>{{ usersCount }}</b> total users registered.
+    </p>
+        <table class="table-fixed w-full mb-12">
+            <thead class="text-left">
+                <tr>
+                    <th class="py-4 px-4">Username</th>
+                    <th class="py-4 px-4">Threads</th>
+                    <th class="py-4 px-4">Posts</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <td class="py-4 px-4 border">
+                        <a href="user/profile/{{ user.username }}">{{ user.username }}</a>
+                    </td>
+                    <td class="py-4 px-4 border">{{ user.threads }}</td>
+                    <td class="py-4 px-4 border">{{ user.posts }}</td>
+                </tr>
+            {%- endfor %}
+            </tbody>
+        </table>
     </main>
 {% endblock %}
