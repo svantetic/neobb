@@ -41,6 +41,7 @@ async function bootstrap() {
     if (req.session.passport && req.session.passport.user) {
       res.locals.user = req.session.passport.user;
     }
+    res.locals.flash = Object.values(req.flash()).join(', ');
     next();   
   });
   app.engine('njk', renderEngine.render);
