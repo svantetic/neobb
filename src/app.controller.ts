@@ -29,4 +29,10 @@ export class AppController {
   terms() {
     return;
   }
+
+  @Get('search')
+  @Render('client/search/index')
+  search() {
+    return;
+  }
 }
