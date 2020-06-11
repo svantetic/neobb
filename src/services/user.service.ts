@@ -3,7 +3,8 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { User } from '../model/user.entity';
 import { UserDto } from "../dto/UserDto";
-import * as crypto from 'crypto';
+import { Request } from 'express';
+import { username } from 'src/config/database';
 
 @Injectable()
 export class UserService {
@@ -13,7 +14,9 @@ export class UserService {
     ) {}
 
     async findAll(): Promise<User[]> {
-        return await this.userRepository.find();
+        return await this.userRepository.find({
+            select: ['username', 'avatar', 'threads', 'posts'],
+        });
     }
 
     async findByEmail(email: string): Promise<User> {
@@ -55,5 +58,9 @@ export class UserService {
     async emailExists(email: string): Promise<boolean> {
         const userExists = await this.userRepository.find({ email });
         return userExists.length > 0;
+    }
+
+    isLoggedIn(request: Request): boolean {
+        return request.session.passport.user;
     }
 }
