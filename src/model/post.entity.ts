@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { Thread } from './thread.entity';
 import { User } from './user.entity';
 
@@ -15,4 +15,10 @@ export class Post {
 
     @ManyToOne(type => User, user => user.posts)
     author: User;
+
+    @CreateDateColumn()
+    createdAt;
+
+    @UpdateDateColumn()
+    updatedAt;
 }

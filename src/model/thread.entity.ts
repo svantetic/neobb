@@ -1,4 +1,4 @@
-import {Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne, CreateDateColumn, UpdateDateColumn} from "typeorm";
 import { Post } from "./post.entity";
 import { User } from "./user.entity";
 import { Section } from "./section.entity";
@@ -24,4 +24,10 @@ export class Thread {
 
     @ManyToOne(type => Section, section => section.threads)
     section: Section;
+
+    @CreateDateColumn()
+    createdAt;
+
+    @UpdateDateColumn()
+    updatedAt;
 }
