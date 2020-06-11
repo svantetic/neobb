@@ -1,7 +1,10 @@
-import { Controller, Get, Post, Body, HttpStatus, UsePipes, ConflictException, UseGuards, Req, Param, Render } from '@nestjs/common';
+import { Controller, Get, Post, Body, HttpStatus, UsePipes, ConflictException, UseGuards, Req, Param, Render, UseFilters, Query } from '@nestjs/common';
 import { ThreadService } from '../services/thread.service';
 import { Thread } from '../model/thread.entity';
 import { AuthGuard } from '@nestjs/passport';
+import { AuthenticatedGuard } from 'src/guards/authenticated.guard';
+import { LoginRequiredFilter } from 'src/filters/login-required.filter';
+import { Request } from 'express';
 
 export interface ThreadDto {
     name: string;
@@ -15,6 +18,18 @@ export class ThreadController {
         private readonly threadService: ThreadService,
     ) {}
 
+    
+    @Get('/new')
+    @UseGuards(AuthenticatedGuard)
+    @UseFilters(LoginRequiredFilter)
+    @Render('client/thread/new')
+    newThread(@Query('section') section: string | number) {
+        return {
+            section,
+        }
+    }
+
+
     @Get(':id')
     @Render('client/thread/index')
     async findOne(@Param('id') id: string | number): Promise<{ thread: any }> {
@@ -26,24 +41,14 @@ export class ThreadController {
         }
     }
 
-    @Get()
-    async index() {
-        const threads = await this.threadService.findAll();
-        return {
-            statusCode: HttpStatus.OK,
-            body: {
-                threads,
-            }
-        };
-    }
-
     @Post()
-    async create(@Req() request, @Body() thread: ThreadDto) {
-        const created = await this.threadService.create(request.user, thread);
-        if (created) {
+    async create(@Req() request: Request, @Body() thread: ThreadDto) {        
+        const threadCreated = await this.threadService.create(request.session.passport.user, thread);
+        if (thread) {
             return {
                 statusCode: HttpStatus.OK,
                 message: 'Thread created',
+                thread: threadCreated,
             };
         }
     }
