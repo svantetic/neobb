@@ -13,10 +13,7 @@ export class AppController {
   @Render('client/index/index')
   async root() {
     const segments = await this.segmentService.findAll();
-    console.log('segments');
-    console.log(segments[0].sections[0]);
-    
-    
+   
     return {
       message: 'Witam na forum',
       forumName: this.forumName,
