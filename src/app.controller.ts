@@ -29,11 +29,4 @@ export class AppController {
   terms() {
     return;
   }
-
-  @Get('users')
-  @Render('client/users/index')
-  users() {
-    return;
-  }
-  
 }
