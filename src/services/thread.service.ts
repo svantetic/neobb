@@ -21,7 +21,7 @@ export class ThreadService {
     async findBySection(sectionId: number | string): Promise<Thread[]> {
         return await this.repository.find({
             relations: ['author'],
-            select: ['name'],
+            select: ['id', 'name'],
             where: {
                 section: sectionId,
             }
@@ -53,32 +53,27 @@ export class ThreadService {
         return this.repository.find();
     }
 
-    async create(user: User, thread: ThreadDto): Promise<InsertResult> {
-        if (!user.email || !thread.sectionId) {
+    async create(username: string, thread: ThreadDto): Promise<Thread> {
+        if (!username || !thread.sectionId) {
+            console.log('username', username);
+            console.log('thread', thread);
             throw new NotAcceptableException('Thread data missing');
         }
 
-        const author = await this.userService.findByEmail(user.email);
+        const author = await this.userService.findByName(username);
         const section = await this.sectionService.findById(thread.sectionId);
 
         if (!author || !section) {
             throw new UnprocessableEntityException('Could not found section or author');
         }
 
-        const newThread = this.repository.create();
+        const newThread = new Thread();
         newThread.content = thread.content;
         newThread.name = thread.name;
         newThread.author = author;
         newThread.section = section;
-
-        return await this.repository.insert({
-            id: null,
-            name: thread.name,
-            content: thread.content,
-            author,
-            posts: [],
-            section,
-        });
-
+        console.log('new thread to be saved', newThread);
+        
+        return await this.repository.save(newThread);
     }
 }
