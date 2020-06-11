@@ -1,8 +1,8 @@
 {% extends "../../base.njk" %}
 
 {% block content %}
-    <main class="container mx-auto shadow-md py-6 px-4 my-4 w-full flex">
-        <div class="w-64">
+    <div class="flex shadow-md py-4">
+        <div class="w-64 pb-4">
             {% include "../user/author.njk" %}
         </div>
         <div class="w-auto">
@@ -13,6 +13,5 @@
                 {{ thread.content }}
             </div>
         </div>
-    </main>
-
+    </div>
 {% endblock %}

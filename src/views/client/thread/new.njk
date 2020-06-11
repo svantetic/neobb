@@ -1,0 +1,13 @@
+{% extends "../../base.njk" %}
+
+{% block content %}
+    <form action="./" method="POST" class="flex flex-col items-start">
+        <label class="mb-4" for="title">Thread title</label>
+        <input required class="border w-full px-2 py-2 mb-4 shadow-md" type="text" name="name" id="name">
+        <label class="mb-4" for="content">Content</label>
+        <textarea required class="border  w-full px-2 py-2 shadow-md" name="content" id="content" cols="30" rows="10"></textarea>
+        <button class="px-4 py-4 bg-blue-500 text-white mt-8 w-auto hover:bg-blue-800 rounded" type="submit">Create thread</button>
+
+        <input type="hidden" value={{section}} name="sectionId" id="sectionId"/>
+    </form>
+{% endblock %}

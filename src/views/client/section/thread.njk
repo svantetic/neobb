@@ -9,7 +9,7 @@
         {% for thread in threads %}
             <tr>
                 <td class="border w-3/4 px-4 py-6">
-                    <p class="text-lg"><a href="/thread/{{section.id}}" class="hover:underline">{{thread.name}}</a></p>
+                    <p class="text-lg"><a href="/thread/{{thread.id}}" class="hover:underline">{{thread.name}}</a></p>
                     <p class="text-sm"><a href="/user/{{thread.author.username}}" class="hover:underline">@{{thread.author.username}}</a></p>
                     
                 </td>
