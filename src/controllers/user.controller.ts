@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, HttpStatus, UsePipes, ConflictException, Res, Render, UseGuards, Req, UseFilters } from '@nestjs/common';
+import { Controller, Get, Post, Body, HttpStatus, UsePipes, ConflictException, Res, Render, UseGuards, Req, UseFilters, Redirect } from '@nestjs/common';
 import { UserService } from '../services/user.service';
 import { User } from '../model/user.entity';
 import { UserValidationPipePipe } from '../pipes/user-validation-pipe.pipe';
@@ -8,6 +8,7 @@ import { Response, Request } from 'express';
 import { LoginGuard } from 'src/guards/login.guard';
 import { HttpExceptionFilter } from 'src/filters/http-exception.filter';
 import { AuthenticatedGuard } from 'src/guards/authenticated.guard';
+import { LoginRequiredFilter } from 'src/filters/login-required.filter';
 
 @Controller()
 export class UserController {
@@ -16,9 +17,7 @@ export class UserController {
   @Get('login')
   @Render('client/login/index')
   loginForm(@Req() request: Request,) {
-    return { 
-      flashMessage: request.flash('loginError') 
-    };
+    return;
   }
 
   @UseGuards(LoginGuard)
@@ -35,6 +34,17 @@ export class UserController {
   logout(@Req() request: Request, @Res() response: Response): void {
     request.logout();
     return response.redirect('/');
+  }
+
+  @UseGuards(AuthenticatedGuard)
+  @Get('users')
+  @Render('client/user/index')
+  @UseFilters(LoginRequiredFilter)
+  index(@Req() request: Request, @Res() response: Response) {
+    const users = this.userService.findAll();
+    return {
+      users,
+    }
   }
   
   // @Get()
