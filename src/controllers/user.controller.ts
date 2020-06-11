@@ -7,6 +7,7 @@ import { AuthService } from '../services/auth.service';
 import { Response, Request } from 'express';
 import { LoginGuard } from 'src/guards/login.guard';
 import { HttpExceptionFilter } from 'src/filters/http-exception.filter';
+import { AuthenticatedGuard } from 'src/guards/authenticated.guard';
 
 @Controller()
 export class UserController {
@@ -27,6 +28,13 @@ export class UserController {
     if (request.session.passport.user) {
       return response.redirect('/');
     }
+  }
+
+  @UseGuards(AuthenticatedGuard)
+  @Get('logout')
+  logout(@Req() request: Request, @Res() response: Response): void {
+    request.logout();
+    return response.redirect('/');
   }
   
   // @Get()

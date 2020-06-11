@@ -7,8 +7,11 @@
             <li class="mr-6"><a href="/search" class="hover:underline text-white">Szukaj</a></li>
         </div>
         <div class="flex">
+        {% if user %}
+            <li class="mr-6"><a href="/logout" class="hover:underline text-white">Logout</a></li>
+        {% else %}
             <li class="mr-6"><a href="/login" class="hover:underline text-white">Login</a></li>
+        {% endif %}
         </div>
     </ul>
-    {{ user }}
 </nav>
