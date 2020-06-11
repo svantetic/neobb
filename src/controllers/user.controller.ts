@@ -36,14 +36,22 @@ export class UserController {
     return response.redirect('/');
   }
 
-  @UseGuards(AuthenticatedGuard)
+  // @UseGuards(AuthenticatedGuard)
   @Get('users')
   @Render('client/user/index')
   @UseFilters(LoginRequiredFilter)
-  index(@Req() request: Request, @Res() response: Response) {
-    const users = this.userService.findAll();
+  async index(@Req() request: Request, @Res() response: Response) {
+    let users: any = await this.userService.findAll();
+    users = users.map((user) => {
+      return {
+        ...user,
+        posts: user.posts.length,
+        threads: user.threads.length,
+      }
+    });
     return {
       users,
+      usersCount: users.length,
     }
   }
   
