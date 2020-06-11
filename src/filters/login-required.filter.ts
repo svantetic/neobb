@@ -13,7 +13,7 @@ export class LoginRequiredFilter implements ExceptionFilter {
         exception instanceof ForbiddenException
      ) {
        request.flash('loginRequired', 'Login is required');
-       response.redirect('login');
+       response.redirect('/login');
     }
   }
 }
