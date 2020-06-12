@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert, Exclusion, ManyToOne, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert, Exclusion, ManyToOne, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import * as crypto from 'crypto';
 import { ExclusionMetadata } from 'typeorm/metadata/ExclusionMetadata';
 import bcrypt from 'bcryptjs';
@@ -32,4 +32,10 @@ export class User {
 
     @OneToMany(type => Post, post => post.author)
     posts: Post[];
+
+    @CreateDateColumn()
+    createdAt
+
+    @UpdateDateColumn()
+    updatedAt
 }
