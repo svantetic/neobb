@@ -1,8 +1,8 @@
 {
   "name": "neobb",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "Modern internet forum script",
+  "author": "svantetic",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
