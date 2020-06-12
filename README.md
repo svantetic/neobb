@@ -4,7 +4,7 @@
 
 NeBB is homage to internet forum engines such as phpByPrzemo, VBulletin or MyBB but written in modern technology stack and clean MVC architecture.
 
-## Features 
+## Features planned
 - MVC architecture with clean separation of concerns
 - admin dashboard
 - unit and functional tests
