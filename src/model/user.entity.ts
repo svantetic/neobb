@@ -1,6 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert, Exclusion, ManyToOne, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
-import * as crypto from 'crypto';
-import { ExclusionMetadata } from 'typeorm/metadata/ExclusionMetadata';
+import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import bcrypt from 'bcryptjs';
 import { Thread } from './thread.entity';
 import { Post } from './post.entity';
