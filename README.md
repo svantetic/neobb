@@ -24,7 +24,9 @@ NeBB is homage to internet forum engines such as phpByPrzemo, VBulletin or MyBB 
 - Nestjs
 - TypeScript
 - TypeORM
+- Tailwind
 - React
+
 More in package.json
 
 NeoBB is based on <a href="http://nestjs.com/" target="blank">Nest</a> framework
