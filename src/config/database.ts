@@ -1,6 +1,7 @@
 import { join } from 'path';
+import { registerAs } from '@nestjs/config';
 
-const ORMConfig = {
+export default registerAs('database', () => ({
     driver: 'mysq',
     type: 'mysql',
     host: 'localhost',
@@ -15,6 +16,4 @@ const ORMConfig = {
     cli: {
         migrationsDir: 'src/migration',
     },
-};
-
-export = ORMConfig;
+}));

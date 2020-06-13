@@ -4,7 +4,7 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostModule } from './model/post.module';
 import { UserModule } from './modules/user.module';
-import { ConfigModule, ConfigService } from 'nestjs-config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SegmentModule } from './modules/segment.module';
 import { SectionModule } from './modules/section.module';
 import { PassportModule } from '@nestjs/passport';
@@ -13,11 +13,14 @@ import * as path from 'path';
 import { AdminModule } from './modules/admin.module';
 import { LocalStrategy } from './strategy/local.strategy';
 import { AuthModule } from './modules/auth.module';
+import ORMConfig from './config/database';
 
 @Module({
   imports: [
-    ConfigModule,
-    ConfigModule.load(path.resolve(__dirname, 'config', '**', '!(*.d).{ts,js}')),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [ORMConfig]
+    }),
     TypeOrmModule.forRootAsync({
       useFactory: (config: ConfigService) => config.get('database'),
       inject: [ConfigService],
