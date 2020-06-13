@@ -16,8 +16,14 @@ export class SectionController {
     @Render('client/section/index')
     async findOne(@Param('id') id): Promise<any> {
         const section = await this.service.findById(id);
-        const threads = await this.threadService.findBySection(section.id);
-        console.log(threads);
+        let threads: any = await this.threadService.findBySection(section.id);
+        threads = threads.map((thread) => {
+            return {
+                ...thread,
+                posts: thread.posts.length,
+            }
+        });
+
         return {
             section,
             threads,
