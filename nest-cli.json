@@ -2,6 +2,9 @@
   "collection": "@nestjs/schematics",
   "sourceRoot": "src",
   "assets": [
-    { "include": "**/*.njk", "exclude": "**/omitted.graphql", "watchAssets": true }
+    { "include": "**/*.njk", 
+      "exclude": ["**/omitted.graphql", "src/frontend/**/*.ts*"], 
+      "watchAssets": true 
+    }
   ]
 }
