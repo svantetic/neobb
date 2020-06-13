@@ -1,10 +1,8 @@
 import { Injectable, NotAcceptableException, UnprocessableEntityException } from "@nestjs/common";
 import { Thread } from "../model/thread.entity";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository, InsertResult } from "typeorm";
+import { Repository } from "typeorm";
 import { ThreadDto } from "../controllers/thread.controller";
-import { AuthGuard } from "@nestjs/passport";
-import { User } from "../model/user.entity";
 import { UserService } from "./user.service";
 import { SectionService } from "./section.service";
 
