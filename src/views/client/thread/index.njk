@@ -9,7 +9,7 @@
             <h1 class="text-xl mb-10">
                 {{ thread.name }}
             </h1>
-            <p>{{ thread.createdAt }}</p>
+            <p>{{ thread.createdAt | date_local }}</p>
             <div>
                 {{ thread.content }}
             </div>
