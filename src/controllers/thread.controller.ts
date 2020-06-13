@@ -1,7 +1,5 @@
-import { Controller, Get, Post, Body, HttpStatus, UsePipes, ConflictException, UseGuards, Req, Param, Render, UseFilters, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, HttpStatus, UseGuards, Req, Param, Render, UseFilters, Query } from '@nestjs/common';
 import { ThreadService } from '../services/thread.service';
-import { Thread } from '../model/thread.entity';
-import { AuthGuard } from '@nestjs/passport';
 import { AuthenticatedGuard } from 'src/guards/authenticated.guard';
 import { LoginRequiredFilter } from 'src/filters/login-required.filter';
 import { Request } from 'express';
