@@ -9,10 +9,19 @@ module.exports = {
             {
                 test: /\.(ts|tsx)$/,
                 exclude: /(node_modules|bower_components)/,
-                loader: 'babel-loader',
-                options: {
-                    presets: ['@babel/preset-react']
-                }
+                use: [
+                    {
+                        loader: 'ts-loader',
+                        options: {
+                            configFile: 'tsconfig.frontend.json',
+                        }
+                    }
+                ]
+            },
+            {
+                enforce: 'pre',
+                test: /\.js$/,
+                loader: "source-map-loader"
             }
         ]
     },
