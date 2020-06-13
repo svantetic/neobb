@@ -18,14 +18,17 @@ export class ThreadService {
     }
     async findBySection(sectionId: number | string): Promise<Thread[]> {
         return await this.repository.find({
-            relations: ['author'],
-            select: ['id', 'name'],
+            relations: ['author', 'posts'],
+            select: ['id', 'name', 'createdAt', 'updatedAt'],
             where: {
                 section: sectionId,
-            }
-        })
+            },
+            order: {
+                createdAt: 'DESC',
+            },
+        });
     }
-
+    
     async findOne(id: number | string): Promise<Thread> {
         return await this.repository.findOne({
             relations: ['author'],
