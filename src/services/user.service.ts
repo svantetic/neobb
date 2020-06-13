@@ -4,7 +4,6 @@ import { Repository } from "typeorm";
 import { User } from '../model/user.entity';
 import { UserDto } from "../dto/UserDto";
 import { Request } from 'express';
-import { username } from 'src/config/database';
 
 @Injectable()
 export class UserService {
