@@ -15,4 +15,12 @@
             </div>
         </div>
     </div>
+
+    <div id="post-mount">
+    {# React script mount point #}
+    </div>
+
+    {% block scripts %}
+        <script src="/js/bundle.js"></script>
+    {% endblock %}
 {% endblock %}
