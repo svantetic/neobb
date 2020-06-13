@@ -11,7 +11,7 @@ const port = 8080;
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  
+
   const renderEngine = nunjucks.configure(
     join(__dirname, '../src', 'views'),
     {
@@ -20,9 +20,13 @@ async function bootstrap() {
       trimBlocks: false,
       lstripBlocks: false,
       noCache: true,
-      express: app
+      express: app,
     }
   );
+
+  
+  renderEngine.addFilter('date_local', (str: string, count) => new Date(str).toLocaleString());
+
 
   app.use(
     session({
