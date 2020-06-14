@@ -35,7 +35,6 @@ export class ThreadController {
     async index(@Param('id') id: string | number): Promise<{ thread: any }> {
         const thread = await this.threadService.findOne(id);
         thread.posts = await this.postService.findByThread(thread);
-        console.log(thread);
         return {
             thread,
         }
