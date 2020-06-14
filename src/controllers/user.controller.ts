@@ -54,6 +54,14 @@ export class UserController {
       usersCount: users.length,
     }
   }
+
+  @Get('profile')
+  @Render('client/user/profile')
+  @UseGuards(AuthenticatedGuard)
+  @UseFilters(LoginRequiredFilter)
+  async profile(@Req() request: Request) {
+    return;
+  }
   
   // @Get()
   // async root() {
