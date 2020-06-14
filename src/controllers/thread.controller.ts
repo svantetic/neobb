@@ -3,6 +3,7 @@ import { ThreadService } from '../services/thread.service';
 import { AuthenticatedGuard } from 'src/guards/authenticated.guard';
 import { LoginRequiredFilter } from 'src/filters/login-required.filter';
 import { Request } from 'express';
+import { PostService } from 'src/services/post.service';
 
 export interface ThreadDto {
     name: string;
@@ -14,6 +15,7 @@ export interface ThreadDto {
 export class ThreadController {
     constructor(
         private readonly threadService: ThreadService,
+        private readonly postService: PostService,
     ) {}
 
     
@@ -30,10 +32,10 @@ export class ThreadController {
 
     @Get(':id')
     @Render('client/thread/index')
-    async findOne(@Param('id') id: string | number): Promise<{ thread: any }> {
+    async index(@Param('id') id: string | number): Promise<{ thread: any }> {
         const thread = await this.threadService.findOne(id);
+        thread.posts = await this.postService.findByThread(thread);
         console.log(thread);
-        
         return {
             thread,
         }
