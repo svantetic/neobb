@@ -8,12 +8,14 @@ import { SectionService } from '../services/section.service';
 import { Section } from '../model/section.entity';
 import { User } from '../model/user.entity';
 import { Segment } from '../model/segment.entity';
+import { PostService } from 'src/services/post.service';
+import { Post } from 'src/model/post.entity';
 
 @Module({
     imports: [
-        TypeOrmModule.forFeature([Thread, User, Section, Segment]),
+        TypeOrmModule.forFeature([Thread, User, Section, Segment, Post]),
     ],
     controllers: [ThreadController],
-    providers: [ThreadService, UserService, SectionService],
+    providers: [ThreadService, UserService, SectionService, PostService],
 })
 export class ThreadModule {}
