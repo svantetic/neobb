@@ -49,4 +49,22 @@ export class PostService {
 
     return await this.postRepository.save(newPost);
   }
+
+  async findLatestByThread(thread: Thread): Promise<Post> {
+    const latestPost = await this.postRepository.find({
+      select: ['id', 'createdAt', 'author'],
+      relations: ['author'],
+      where: {
+        thread: thread.id,
+      },
+      order: {
+        createdAt: 'DESC',
+      },
+      take: 1,
+    });
+
+    if (latestPost.length) {
+      return latestPost[0];
+    }
+  }
 }

@@ -17,7 +17,7 @@
                 
                 <td class="border w-1/8 px-4 py-2">
                     {% if thread.latestPost %}
-                        {{ thread.lastestPost }}
+                        {{ thread.latestPost.createdAt | date_local }} by {{ thread.latestPost.author.username }}
                     {% else %}
                         No replies yet
                     {% endif %}
