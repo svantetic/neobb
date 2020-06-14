@@ -1,0 +1,14 @@
+<div class="flex shadow-md py-4">
+    <div class="w-64 pb-4">
+        {% include "./author.njk" %}
+    </div>
+    <div class="w-auto">
+        <h1 class="text-xl mb-10">
+            {{ post.name }}
+        </h1>
+        <p>{{ post.createdAt | date_local }}</p>
+        <div>
+            {{ post.content }}
+        </div>
+    </div>
+</div>

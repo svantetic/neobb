@@ -16,11 +16,18 @@
         </div>
     </div>
 
+    {% for post in thread.posts %}
+        {% include "../post/post.njk" %}
+    {% endfor %}
+
     <div id="post-mount">
     {# React script mount point #}
     </div>
 
     {% block scripts %}
         <script src="/js/bundle.js"></script>
+        <script>
+            window.threadId = {{ thread.id }};
+        </script>
     {% endblock %}
 {% endblock %}
