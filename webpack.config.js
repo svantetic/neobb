@@ -25,6 +25,10 @@ module.exports = {
             }
         ]
     },
+    watch: true,
+    watchOptions: {
+        poll: 1000,
+    },
     resolve: {
         extensions: ['*', '.ts', '.tsx', '.js', '.jsx'],
     },
