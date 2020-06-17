@@ -9,12 +9,12 @@
 </head>
 <body>
     <main class="flex">
-        {% include "./partials/admin.navigation.njk" %}
-        <div class="container mx-auto">
-            {% block content %}
-                welcome back admin
-            {% endblock %}
+        {# {% include "./partials/admin.navigation.njk" %} #}
+        <div id="admin-index">
+        {# mount point #}
         </div>
     </main>
+
+    <script src="admin-bundle.js"></script>
 </body>
 </html>
