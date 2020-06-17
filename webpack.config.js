@@ -1,21 +1,34 @@
 const path = require('path');
 const webpack = require('webpack');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 module.exports = {
-    entry: './src/frontend/js/index.tsx',
+    entry: './src/frontend/js/index.ts',
     mode: 'development',
     module: {
         rules: [
             {
-                test: /\.(ts|tsx)$/,
+                test: /\.(ts)$/,
                 exclude: /(node_modules|bower_components)/,
                 use: [
                     {
                         loader: 'ts-loader',
                         options: {
                             configFile: 'tsconfig.frontend.json',
+                            appendTsSuffixTo: [/\.vue$/]
                         }
                     }
+                ]
+            },
+            {
+                test: /\.vue$/,
+                loader: 'vue-loader',  
+            },
+            {
+                test: /\.css$/,
+                use: [
+                    'vue-style-loader',
+                    'css-loader',
                 ]
             },
             {
@@ -25,12 +38,19 @@ module.exports = {
             }
         ]
     },
+    plugins: [
+        new VueLoaderPlugin(),
+    ],
     watch: true,
     watchOptions: {
         poll: 1000,
     },
     resolve: {
-        extensions: ['*', '.ts', '.tsx', '.js', '.jsx'],
+        alias: {
+            vue$: 'vue/dist/vue.esm.js'
+          },
+          
+        extensions: ['.ts', '.tsx', '.js', '.jsx', '.vue'],
     },
     output: {
         path: path.resolve(__dirname, 'public/js'),
