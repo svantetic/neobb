@@ -5,8 +5,20 @@
         "noImplicitAny": true,
         "module": "commonjs",
         "target": "es6",
-        "jsx": "react",
-        "esModuleInterop": true
+        "jsx": "preserve",
+        "experimentalDecorators": true,
+        "esModuleInterop": true,
+        "lib": [
+            "esnext",
+            "dom",
+            "dom.iterable",
+            "scripthost"
+        ],
+        
     },
-    "include": ["src/frontend/**/*.ts*"],
+    "include": [
+        "src/frontend/**/*.ts",
+        "src/fontend/**/*.tsx",
+        "src/**/*.vue",
+    ],
   }
