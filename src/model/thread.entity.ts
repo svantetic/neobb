@@ -11,11 +11,6 @@ export class Thread {
     @Column()
     name: string;
 
-    @Column({
-        type: 'longtext',
-    })
-    content: string;
-
     @OneToMany(type => Post, post => post.thread)
     posts: Post[];
 

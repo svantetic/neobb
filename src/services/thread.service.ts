@@ -32,7 +32,7 @@ export class ThreadService {
     async findOne(id: number | string): Promise<Thread> {
         return await this.repository.findOne({
             relations: ['author'],
-            select: ['content', 'id', 'name', 'section', 'createdAt'],
+            select: ['id', 'name', 'section', 'createdAt'],
             where: {
                 id,
             }
@@ -69,7 +69,6 @@ export class ThreadService {
         }
 
         const newThread = new Thread();
-        newThread.content = thread.content;
         newThread.name = thread.name;
         newThread.author = author;
         newThread.section = section;
