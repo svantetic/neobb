@@ -17,7 +17,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import Button from '../common/Button.vue';
+import Button from '../../common/Button.vue';
 
 declare global {
   interface Window {

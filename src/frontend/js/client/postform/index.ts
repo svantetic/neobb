@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import PostForm from './components/PostForm.vue';
+import PostForm from './PostForm.vue';
 
 new Vue({
     el: '#post-form',

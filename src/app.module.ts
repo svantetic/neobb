@@ -13,6 +13,7 @@ import * as path from 'path';
 import { AdminModule } from './modules/admin.module';
 import { LocalStrategy } from './strategy/local.strategy';
 import { AuthModule } from './modules/auth.module';
+import { AppGateway } from './app.gateway';
 import ORMConfig from './config/database';
 
 @Module({
@@ -34,7 +35,7 @@ import ORMConfig from './config/database';
     AdminModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, AppGateway],
 })
 export class AppModule {
   

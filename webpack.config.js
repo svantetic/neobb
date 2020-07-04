@@ -4,7 +4,8 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 module.exports = {
     entry: {
-        client: './src/frontend/js/index.ts',
+        postform: './src/frontend/js/client/postform/index.ts',
+        shoutbox: './src/frontend/js/client/shoutbox/index.ts',
         admin: './src/frontend/js/admin/index.ts',
     },
     mode: 'development',
