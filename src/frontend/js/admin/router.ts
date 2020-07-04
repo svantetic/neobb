@@ -1,16 +1,16 @@
 import VueRouter from 'vue-router';
 import AdminDashboard from './components/AdminDashboard.vue';
-import AdminForumShape from './components/AdminForumShape.vue';
+import AdminStructure from './components/AdminStructure.vue';
 
 const Router = new VueRouter({
     routes: [
         {
-            path: '/admin/dashboard',
+            path: '/dashboard',
             component: AdminDashboard,
         },
         {
-            path: '/admin/forum-shape',
-            component: AdminForumShape,
+            path: '/structure',
+            component: AdminStructure,
         }
     ]
 })

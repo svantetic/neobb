@@ -24,9 +24,14 @@ export class ThreadService {
                 section: sectionId,
             },
             order: {
-                createdAt: 'DESC',
+                updatedAt: 'DESC',
             },
         });
+    }
+
+    async update(thread: Thread): Promise<Thread> {
+        thread.updatedAt = new Date();
+        return this.repository.save(thread);
     }
     
     async findOne(id: number | string): Promise<Thread> {
@@ -38,17 +43,7 @@ export class ThreadService {
             }
         })
     }
-    // async findById(id: number | string): Promise<Thread> {
-    //     return await this.repository.createQueryBuilder('thread')
-    //         .leftJoin('thread.posts', 'post')
-    //         .leftJoin('thread.author', 'author')
-    //         .leftJoin('post.author', 'postauthor')
-    //         .addSelect('post')
-    //         .addSelect(['author.username', 'author.id', 'author.avatar'])
-    //         .addSelect(['postauthor.username', 'postauthor.id', 'postauthor.avatar'])
-    //         .where('thread.id = :id', { id })
-    //         .getOne();
-    // }
+
 
     async findAll() {
         return this.repository.find();

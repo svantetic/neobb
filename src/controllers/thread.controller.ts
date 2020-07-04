@@ -1,8 +1,8 @@
-import { Controller, Get, Post, Body, HttpStatus, UseGuards, Req, Param, Render, UseFilters, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, HttpStatus, UseGuards, Req, Param, Render, UseFilters, Query, Res } from '@nestjs/common';
 import { ThreadService } from '../services/thread.service';
 import { AuthenticatedGuard } from 'src/guards/authenticated.guard';
 import { LoginRequiredFilter } from 'src/filters/login-required.filter';
-import { Request } from 'express';
+import { Request, Response } from 'express';
 import { PostService } from 'src/services/post.service';
 
 export interface ThreadDto {
@@ -41,14 +41,17 @@ export class ThreadController {
     }
 
     @Post()
-    async create(@Req() request: Request, @Body() thread: ThreadDto) {        
+    async create(
+        @Req() request: Request,
+        @Res() response: Response,
+        @Body() thread: ThreadDto
+    ) {        
         const threadCreated = await this.threadService.create(request.session.passport.user, thread);
-        if (thread) {
-            return {
-                statusCode: HttpStatus.OK,
-                message: 'Thread created',
-                thread: threadCreated,
-            };
+        console.log(threadCreated);
+        
+        if (threadCreated) {
+            request.flash('threadCreated', 'Thread successfully created');
+            response.redirect(`/section/${threadCreated.section.id}`);
         }
     }
 }

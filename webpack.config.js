@@ -3,7 +3,10 @@ const webpack = require('webpack');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 module.exports = {
-    entry: './src/frontend/js/index.ts',
+    entry: {
+        client: './src/frontend/js/index.ts',
+        admin: './src/frontend/js/admin/index.ts',
+    },
     mode: 'development',
     module: {
         rules: [
@@ -55,6 +58,6 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'public/js'),
         publicPath: '/public/js',
-        filename: 'bundle.js',
+        filename: '[name].bundle.js',
     },
 }

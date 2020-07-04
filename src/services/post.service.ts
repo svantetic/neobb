@@ -47,7 +47,12 @@ export class PostService {
     newPost.author = author;
     newPost.thread = thread;
 
-    return await this.postRepository.save(newPost);
+    const updated = await this.threadService.update(thread);
+
+    if (updated) {
+      return await this.postRepository.save(newPost);
+    }
+
   }
 
   async findLatestByThread(thread: Thread): Promise<Post> {
