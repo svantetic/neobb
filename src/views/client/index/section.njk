@@ -14,7 +14,15 @@
                 <p class="text-gray-700 text-sm">{{section.description}}</p>
             </td>
             <td class="border w-1/8 px-4 py-2">no data</td>
-            <td class="border w-1/8 px-4 py-2">no posts yet</td>
+            <td class="border w-1/8 px-4 py-2">
+            {% if section.latestPost %}
+                {{ section.latestPost.createdAt | date_local }}
+                by 
+                @{{ section.latestPost.author.username }}
+            {% else %}
+                no posts yet
+            {% endif %}
+            </td>
         </tr>
     {% endfor %}
     </tbody>

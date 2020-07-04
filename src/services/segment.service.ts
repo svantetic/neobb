@@ -12,7 +12,7 @@ export class SegmentService {
 
     async findAll(withSections = true): Promise<Segment[]> {
         const options = {
-            relations: withSections ? ['sections', 'sections.latestPost'] : [],
+            relations: withSections ? ['sections', 'sections.latestPost', 'sections.latestPost.author'] : [],
         };
 
         return await this.repository.find(options);
