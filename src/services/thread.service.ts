@@ -51,8 +51,8 @@ export class ThreadService {
 
     async create(username: string, thread: ThreadDto): Promise<Thread> {
         if (!username || !thread.sectionId) {
-            console.log('username', username);
-            console.log('thread', thread);
+            
+            
             throw new NotAcceptableException('Thread data missing');
         }
 
@@ -67,7 +67,6 @@ export class ThreadService {
         newThread.name = thread.name;
         newThread.author = author;
         newThread.section = section;
-        console.log('new thread to be saved', newThread);
         
         return await this.repository.save(newThread);
     }

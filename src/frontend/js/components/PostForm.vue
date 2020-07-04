@@ -53,7 +53,7 @@ export default class PostForm extends Vue {
   }
 
   createPost() {
-    console.log('should create post with', this.content);
+    
   }
 }
 </script>

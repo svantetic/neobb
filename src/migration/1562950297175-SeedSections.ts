@@ -9,7 +9,7 @@ export class SeedSections1562950297175 implements MigrationInterface {
 
         const segmentQueryResult: ISelectIdQueryResult = await queryRunner.query('SELECT id from segment');
 
-        console.log('segment ids: ', segmentQueryResult);
+        
 
         if (!segmentQueryResult || segmentQueryResult.length === 0) {
             return;

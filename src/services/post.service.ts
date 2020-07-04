@@ -17,7 +17,7 @@ export class PostService {
   ) {}
 
   findAll(): Promise<Post[]> {
-    this.postRepository.find().then((posts) => console.log('posts', posts));
+    this.postRepository.find().then((posts) => 
     return this.postRepository.find();
   }
 

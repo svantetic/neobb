@@ -47,7 +47,7 @@ export class ThreadController {
         @Body() thread: ThreadDto
     ) {        
         const threadCreated = await this.threadService.create(request.session.passport.user, thread);
-        console.log(threadCreated);
+        
         
         if (threadCreated) {
             request.flash('threadCreated', 'Thread successfully created');
