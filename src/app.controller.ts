@@ -2,18 +2,21 @@ import { Controller, Get, Render, UseGuards } from '@nestjs/common';
 import { AppService } from './app.service';
 import { AuthGuard } from '@nestjs/passport';
 import { SegmentService } from './services/segment.service';
+import { SectionService } from './services/section.service';
 
 @Controller()
 export class AppController {
   private readonly forumName: string = 'NeoBB';
-  constructor(private readonly appService: AppService,
-    private readonly segmentService: SegmentService) {}
+  constructor(
+    private readonly appService: AppService,
+    private readonly segmentService: SegmentService,
+    ) {}
 
   @Get()
   @Render('client/index/index')
   async root() {
     const segments = await this.segmentService.findAll();
-   
+
     return {
       message: 'Witam na forum',
       forumName: this.forumName,

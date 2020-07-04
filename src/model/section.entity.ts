@@ -1,6 +1,7 @@
-import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, OneToOne, JoinColumn} from "typeorm";
 import { Segment } from './segment.entity';
 import { Thread } from "./thread.entity";
+import { Post } from './post.entity';
 
 @Entity()
 export class Section {
@@ -12,6 +13,10 @@ export class Section {
 
     @Column()
     description: string;
+
+    @OneToOne(type => Post)
+    @JoinColumn()
+    latestPost: Post;
 
     @ManyToOne(type => Segment, segment => segment.sections)
     segment: Segment;

@@ -36,7 +36,7 @@ export class ThreadService {
     
     async findOne(id: number | string): Promise<Thread> {
         return await this.repository.findOne({
-            relations: ['author'],
+            relations: ['author', 'section'],
             select: ['id', 'name', 'section', 'createdAt'],
             where: {
                 id,

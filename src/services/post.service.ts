@@ -6,6 +6,7 @@ import { Thread } from 'src/model/thread.entity';
 import { User } from 'src/model/user.entity';
 import { UserService } from './user.service';
 import { ThreadService } from './thread.service';
+import { SectionService } from './section.service';
 
 @Injectable()
 export class PostService {
@@ -14,10 +15,10 @@ export class PostService {
     private readonly postRepository: Repository<Post>,
     private readonly userService: UserService,
     private readonly threadService: ThreadService,
+    private readonly sectionService: SectionService,
   ) {}
 
   findAll(): Promise<Post[]> {
-    this.postRepository.find().then((posts) => 
     return this.postRepository.find();
   }
 
@@ -47,12 +48,15 @@ export class PostService {
     newPost.author = author;
     newPost.thread = thread;
 
-    const updated = await this.threadService.update(thread);
+    const savedPost = await this.postRepository.save(newPost);
+    this.updateParentEntities(thread, savedPost);
 
-    if (updated) {
-      return await this.postRepository.save(newPost);
-    }
+    return savedPost;
+  }
 
+  async updateParentEntities(thread: Thread, post: Post) {
+    this.threadService.update(thread);
+    this.sectionService.updateSectionLatestPost(thread, post);
   }
 
   async findLatestByThread(thread: Thread): Promise<Post> {
