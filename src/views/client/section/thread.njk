@@ -17,7 +17,8 @@
                 
                 <td class="border w-1/8 px-4 py-2">
                     {% if thread.latestPost %}
-                        {{ thread.latestPost.createdAt | date_local }} by <a href="/user/{{thread.latestPost.author.username}}" class="hover:underline">@{{ thread.latestPost.author.username }}</a>
+                        {% set post = thread.latestPost %}
+                        {% include "../partials/latest-post.njk" %}
                     {% else %}
                         No replies yet
                     {% endif %}
