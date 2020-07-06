@@ -20,6 +20,9 @@ export class User {
     @Column({ select: false })
     password: string;
 
+    @Column({ select: false, default: false })
+    active: boolean;
+
     @BeforeInsert()
     hashPassword() {
         this.password = bcrypt.hashSync(this.password, 5);
@@ -36,4 +39,5 @@ export class User {
 
     @UpdateDateColumn()
     updatedAt
+
 }

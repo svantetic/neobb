@@ -10,8 +10,8 @@ export class AuthService {
       private readonly userService: UserService,
       ) {}
 
-  public async validateByName(payload: string): Promise<User> {
-    return await this.userService.findByName(payload);
+  public async validateByName(username: string): Promise<User> {
+    return await this.userService.findByName(username);
   }
 
   public async register(user: RegisterUserDto): Promise<any> {
@@ -22,7 +22,7 @@ export class AuthService {
     return await bcrypt.compare(existingUser.password, user.password);
   }
 
-  public async validateUser(user: UserDto): Promise<any> {
+  public async validateUser(user: UserDto): Promise<User> {
     const existingUser = await this.validateByName(user.username);
 
     if (existingUser && this.comparePassword(existingUser, user)) {

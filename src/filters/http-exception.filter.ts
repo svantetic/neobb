@@ -1,5 +1,6 @@
 import { ExceptionFilter, Catch, ArgumentsHost, HttpException, UnauthorizedException, ForbiddenException } from '@nestjs/common';
 import { Request, Response } from 'express';
+import { UserNotActivatedException } from 'src/exceptions/UserNotActivatedException';
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
@@ -14,7 +15,11 @@ export class HttpExceptionFilter implements ExceptionFilter {
      ) {
         request.flash('loginError', 'Wrong password');
         response.redirect('back');
-    } else {
+    } else if (exception instanceof UserNotActivatedException) {
+        request.flash('notActivated', new UserNotActivatedException().message);
+        response.redirect('back');
+    }
+    else {
         response.redirect('/error');
     }
   }
