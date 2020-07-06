@@ -66,4 +66,10 @@ export class UserService {
     isLoggedIn(request: Request): boolean {
         return request.session.passport.user;
     }
+
+    async activateUser(user: User): Promise<User> {
+        const userToActivate = await this.userRepository.findOne(user.id);
+        userToActivate.active = true;
+        return this.userRepository.manager.save(userToActivate);
+    }
 }

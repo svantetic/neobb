@@ -55,7 +55,6 @@ export default Vue.extend({
   created() {
     this.socket = io('http://localhost:8080');
     this.socket.on('message', (msg) => {
-      console.log(msg);
       this.receiveMessage(msg);
     })
   }

@@ -6,8 +6,6 @@ export class AuthenticatedGuard implements CanActivate {
     const request = context.switchToWs().getClient();
     const sid = this.getSessionCookie(request.handshake.headers.cookie);
     const httpContext = context.switchToHttp().getRequest();
-    console.log(httpContext);
-    console.log(request.session);
     
     return request.isAuthenticated();
   }

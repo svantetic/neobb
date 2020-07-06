@@ -11,7 +11,7 @@ export class ToBeActivated {
     @Column()
     token: string;
 
-    @OneToOne(type => Post)
+    @OneToOne(type => User)
     @JoinColumn()
     user: User;
 }

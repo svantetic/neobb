@@ -30,7 +30,6 @@ export class AppController {
         };
       }
     }
-    console.log(res.locals.flash);
     return {
       message: 'Witam na forum',
       forumName: this.forumName,
