@@ -1,10 +1,11 @@
-import { Controller, Get, Render, UseGuards } from '@nestjs/common';
+import { Controller, Get, Render, UseGuards, Res } from '@nestjs/common';
 import { AppService } from './app.service';
 import { AuthGuard } from '@nestjs/passport';
 import { SegmentService } from './services/segment.service';
 import { Section, Stats } from './model/section.entity';
 import { ThreadService } from './services/thread.service';
 import { PostService } from './services/post.service';
+import { Response } from 'express';
 
 @Controller()
 export class AppController {
@@ -18,7 +19,7 @@ export class AppController {
 
   @Get()
   @Render('client/index/index')
-  async root() {
+  async root(@Res() res: Response) {
     const segments = await this.segmentService.findAll();
     for (const segment of segments) {
       for (const section of segment.sections) {
@@ -29,6 +30,7 @@ export class AppController {
         };
       }
     }
+    console.log(res.locals.flash);
     return {
       message: 'Witam na forum',
       forumName: this.forumName,

@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
-import bcrypt from 'bcryptjs';
+import bcrypt = require('bcryptjs');
 import { Thread } from './thread.entity';
 import { Post } from './post.entity';
 

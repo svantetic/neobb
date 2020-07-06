@@ -6,12 +6,13 @@ import { User } from '../model/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PassportModule } from '@nestjs/passport';
 import { LocalStrategy } from 'src/strategy/local.strategy';
+import { RegistrationController } from 'src/controllers/registration.controller';
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
     PassportModule.register({ defaultStrategy: 'local' }),
   ],
-  controllers: [UserController],
+  controllers: [UserController, RegistrationController],
   providers: [UserService, AuthService, LocalStrategy],
   exports: [UserService]
 })

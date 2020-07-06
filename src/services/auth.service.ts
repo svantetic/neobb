@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException, HttpStatus, ForbiddenException } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from '../model/user.entity';
-import { UserDto, AdminUserDto } from '../dto/UserDto';
+import { UserDto, AdminUserDto, RegisterUserDto } from '../dto/UserDto';
 import bcrypt = require('bcryptjs');
 
 @Injectable()
@@ -14,7 +14,7 @@ export class AuthService {
     return await this.userService.findByName(payload);
   }
 
-  public async register(user: UserDto): Promise<any> {
+  public async register(user: RegisterUserDto): Promise<any> {
       return this.userService.create(user);
   }
 
