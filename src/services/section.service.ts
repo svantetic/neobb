@@ -1,6 +1,6 @@
 import { Injectable, BadRequestException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Section } from '../model/section.entity';
+import { Section, Stats } from '../model/section.entity';
 import { Segment } from '../model/segment.entity';
 import { Repository } from 'typeorm';
 import { Thread } from 'src/model/thread.entity';

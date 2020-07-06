@@ -17,5 +17,6 @@ import { Post } from 'src/model/post.entity';
     ],
     controllers: [ThreadController],
     providers: [ThreadService, UserService, SectionService, PostService],
+    exports: [ThreadService],
 })
 export class ThreadModule {}

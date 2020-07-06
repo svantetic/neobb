@@ -5,6 +5,7 @@ import { Repository } from "typeorm";
 import { ThreadDto } from "../controllers/thread.controller";
 import { UserService } from "./user.service";
 import { SectionService } from "./section.service";
+import { Section } from 'src/model/section.entity';
 
 @Injectable()
 export class ThreadService {
@@ -26,6 +27,14 @@ export class ThreadService {
             order: {
                 updatedAt: 'DESC',
             },
+        });
+    }
+
+    async countBySection(section: Section): Promise<number> {
+        return await this.repository.count({
+            where: {
+                section,
+            }
         });
     }
 

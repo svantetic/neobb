@@ -13,7 +13,10 @@
                 <p class="text-lg"><a href="/section/{{section.id}}" class="hover:underline">{{section.name}}</a></p>
                 <p class="text-gray-700 text-sm">{{section.description}}</p>
             </td>
-            <td class="border w-1/8 px-4 py-2">no data</td>
+            <td class="border w-1/8 px-4 py-2">
+                <p class="text-sm text-gray-700">Threads: {{ section.stats.threads }}</p>
+                <p class="text-sm text-gray-700">Posts: {{ section.stats.posts }}</p>
+            </td>
             <td class="border w-1/8 px-4 py-2">
             {% if section.latestPost %}
                 {% set post = section.latestPost %}

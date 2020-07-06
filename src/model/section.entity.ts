@@ -24,3 +24,10 @@ export class Section {
     @OneToMany(type => Thread, thread => thread.section)
     threads: Thread[];
 }
+
+export interface Stats {
+    stats: {
+        threads: number;
+        posts: number;
+    }
+}

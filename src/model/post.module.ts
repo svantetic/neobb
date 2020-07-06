@@ -15,5 +15,6 @@ import { Segment } from './segment.entity';
   imports: [TypeOrmModule.forFeature([Post, Thread, User, Section, Segment])],
   providers: [PostService, ThreadService, UserService, SectionService],
   controllers: [PostController],
+  exports: [PostService],
 })
 export class PostModule {}

@@ -7,6 +7,7 @@ import { User } from 'src/model/user.entity';
 import { UserService } from './user.service';
 import { ThreadService } from './thread.service';
 import { SectionService } from './section.service';
+import { Section } from 'src/model/section.entity';
 
 @Injectable()
 export class PostService {
@@ -75,5 +76,15 @@ export class PostService {
     if (latestPost.length) {
       return latestPost[0];
     }
+  }
+
+  async countBySection(section: Section): Promise<number> {
+    return this.postRepository.createQueryBuilder('post')
+      .leftJoin('post.thread', 'postThread')
+      .select('post.id')
+      .where('postThread.sectionId = :sectionId', {
+        sectionId: section.id,
+      })
+      .getCount();
   }
 }
