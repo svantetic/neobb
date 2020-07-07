@@ -18,7 +18,7 @@ export class PermissionsFilter implements ExceptionFilter {
         const status = exception.getStatus();
         if (exception instanceof InsufficientPermissionsException) {
             request.flash(exception.message, exception.message);
-            response.redirect('back');
+            response.redirect('/index');
         }
     }
 }
