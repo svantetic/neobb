@@ -1,4 +1,4 @@
-import {MigrationInterface, QueryRunner} from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 import * as faker from 'faker';
 
 export class SeedSegments1562949510560 implements MigrationInterface {
@@ -15,5 +15,4 @@ export class SeedSegments1562949510560 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<any> {}
-
 }

@@ -10,12 +10,12 @@ import { RegistrationController } from 'src/controllers/registration.controller'
 import { ToBeActivated } from 'src/model/tobeactivated.entity';
 import { RegistrationService } from 'src/services/registration.service';
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([User, ToBeActivated]),
-    PassportModule.register({ defaultStrategy: 'local' }),
-  ],
-  controllers: [UserController, RegistrationController],
-  providers: [UserService, RegistrationService, AuthService, LocalStrategy],
-  exports: [UserService]
+    imports: [
+        TypeOrmModule.forFeature([User, ToBeActivated]),
+        PassportModule.register({ defaultStrategy: 'local' }),
+    ],
+    controllers: [UserController, RegistrationController],
+    providers: [UserService, RegistrationService, AuthService, LocalStrategy],
+    exports: [UserService],
 })
 export class UserModule {}

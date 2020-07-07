@@ -12,10 +12,8 @@ import { PostService } from 'src/services/post.service';
 import { Post } from 'src/model/post.entity';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Section, Segment, Thread, User, Post]),
-  ],
-  controllers: [SectionController],
-  providers: [SectionService, ThreadService, UserService, PostService],
+    imports: [TypeOrmModule.forFeature([Section, Segment, Thread, User, Post])],
+    controllers: [SectionController],
+    providers: [SectionService, ThreadService, UserService, PostService],
 })
 export class SectionModule {}

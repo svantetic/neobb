@@ -11,7 +11,7 @@ export default registerAs('database', () => ({
     port: parseInt(process.env.TYPEORM_PORT, 10),
     entities: [join(__dirname, '/../**/**.entity{.ts,.js}')],
     synchronize: process.env.TYPEORM_SYNCHRONIZE === 'true',
-    migrationsTableName: "custom_migration_table",
+    migrationsTableName: 'custom_migration_table',
     migrations: ['dist/migration/*.ts'],
     cli: {
         migrationsDir: 'src/migration',

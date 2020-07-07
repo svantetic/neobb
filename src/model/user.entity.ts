@@ -1,4 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+    Entity,
+    Column,
+    PrimaryGeneratedColumn,
+    BeforeInsert,
+    OneToMany,
+    CreateDateColumn,
+    UpdateDateColumn,
+} from 'typeorm';
 import bcrypt = require('bcryptjs');
 import { Thread } from './thread.entity';
 import { Post } from './post.entity';
@@ -17,7 +25,7 @@ export class User {
     @Column()
     username: string;
 
-    @Column({default: ''})
+    @Column({ default: '' })
     avatar: string;
 
     @Column()
@@ -42,16 +50,21 @@ export class User {
         this.password = bcrypt.hashSync(this.password, 5);
     }
 
-    @OneToMany(type => Thread, thread => thread.author)
+    @OneToMany(
+        type => Thread,
+        thread => thread.author,
+    )
     threads: Thread[];
 
-    @OneToMany(type => Post, post => post.author)
+    @OneToMany(
+        type => Post,
+        post => post.author,
+    )
     posts: Post[];
 
     @CreateDateColumn()
-    createdAt
+    createdAt;
 
     @UpdateDateColumn()
-    updatedAt
-
+    updatedAt;
 }

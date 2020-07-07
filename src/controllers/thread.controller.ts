@@ -1,4 +1,17 @@
-import { Controller, Get, Post, Body, HttpStatus, UseGuards, Req, Param, Render, UseFilters, Query, Res } from '@nestjs/common';
+import {
+    Controller,
+    Get,
+    Post,
+    Body,
+    HttpStatus,
+    UseGuards,
+    Req,
+    Param,
+    Render,
+    UseFilters,
+    Query,
+    Res,
+} from '@nestjs/common';
 import { ThreadService } from '../services/thread.service';
 import { AuthenticatedGuard } from 'src/guards/authenticated.guard';
 import { LoginRequiredFilter } from 'src/filters/login-required.filter';
@@ -18,7 +31,6 @@ export class ThreadController {
         private readonly postService: PostService,
     ) {}
 
-    
     @Get('/new')
     @UseGuards(AuthenticatedGuard)
     @UseFilters(LoginRequiredFilter)
@@ -26,9 +38,8 @@ export class ThreadController {
     newThread(@Query('section') section: string | number) {
         return {
             section,
-        }
+        };
     }
-
 
     @Get(':id')
     @Render('client/thread/index')
@@ -37,22 +48,23 @@ export class ThreadController {
         thread.posts = await this.postService.findByThread(thread);
         return {
             thread,
-        }
+        };
     }
 
     @Post()
     async create(
         @Req() request: Request,
         @Res() response: Response,
-        @Body() thread: ThreadDto
-    ) {        
-        const threadCreated = await this.threadService.create(request.session.passport.user, thread);
-        
-        
+        @Body() thread: ThreadDto,
+    ) {
+        const threadCreated = await this.threadService.create(
+            request.session.passport.user,
+            thread,
+        );
+
         if (threadCreated) {
             request.flash('threadCreated', 'Thread successfully created');
             response.redirect(`/section/${threadCreated.section.id}`);
         }
     }
-
 }

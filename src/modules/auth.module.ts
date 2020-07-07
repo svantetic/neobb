@@ -10,9 +10,10 @@ import { UserModule } from './user.module';
 import { SessionSerializer } from 'src/serializers/session.serializer';
 
 @Module({
-  imports: [
-    UserModule, PassportModule.register({ defaultStrategy: 'local'})
-  ],
-  providers: [AuthService, LocalStrategy, SessionSerializer],
+    imports: [
+        UserModule,
+        PassportModule.register({ defaultStrategy: 'local' }),
+    ],
+    providers: [AuthService, LocalStrategy, SessionSerializer],
 })
 export class AuthModule {}

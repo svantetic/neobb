@@ -12,9 +12,9 @@ import { Section } from './section.entity';
 import { Segment } from './segment.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Post, Thread, User, Section, Segment])],
-  providers: [PostService, ThreadService, UserService, SectionService],
-  controllers: [PostController],
-  exports: [PostService],
+    imports: [TypeOrmModule.forFeature([Post, Thread, User, Section, Segment])],
+    providers: [PostService, ThreadService, UserService, SectionService],
+    controllers: [PostController],
+    exports: [PostService],
 })
 export class PostModule {}

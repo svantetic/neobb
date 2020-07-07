@@ -1,5 +1,5 @@
-import { Injectable, BadRequestException } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
+import { Injectable, BadRequestException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { Section, Stats } from '../model/section.entity';
 import { Segment } from '../model/segment.entity';
 import { Repository } from 'typeorm';
@@ -37,7 +37,7 @@ export class SectionService {
             relations: ['latestPost'],
             where: {
                 segment: segment,
-            }
+            },
         });
     }
 
@@ -59,12 +59,14 @@ export class SectionService {
         return await this.repository.save(newSection);
     }
 
-    async updateSectionLatestPost(thread: Thread, post: Post): Promise<Section> {
+    async updateSectionLatestPost(
+        thread: Thread,
+        post: Post,
+    ): Promise<Section> {
         const section: Section = await this.findById(thread.section.id);
         if (section) {
             section.latestPost = post;
             return this.repository.save(section);
         }
     }
-
 }

@@ -41,15 +41,18 @@ export class RegistrationController {
         @Res() response: Response,
     ) {
         const valid = await this.registrationService.validateToken(token);
-        
+
         if (valid === false) {
             throw new HttpException('Invalid token', 404);
-        }
-
-        else if (valid) {
-            const user = await this.userService.activateUser((valid as ToBeActivated).user);
+        } else if (valid) {
+            const user = await this.userService.activateUser(
+                (valid as ToBeActivated).user,
+            );
             this.registrationService.delete(valid);
-            request.flash('userActivated', `User account ${user.username} activated successfully`);
+            request.flash(
+                'userActivated',
+                `User account ${user.username} activated successfully`,
+            );
             return response.redirect('/');
         }
 

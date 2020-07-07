@@ -1,8 +1,8 @@
-import { Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { User } from '../model/user.entity';
-import { UserDto, RegisterUserDto } from "../dto/UserDto";
+import { UserDto, RegisterUserDto } from '../dto/UserDto';
 import { Request } from 'express';
 import bcrypt = require('bcryptjs');
 
@@ -16,13 +16,12 @@ export class UserService {
     async findAll(): Promise<User[]> {
         return await this.userRepository.find({
             select: ['username', 'avatar'],
-            relations: ['threads', 'posts']
+            relations: ['threads', 'posts'],
         });
     }
 
     async findByEmail(email: string): Promise<User> {
-        
-        return await this.userRepository.findOne({ 
+        return await this.userRepository.findOne({
             select: ['email', 'password'],
             where: {
                 email,
@@ -34,9 +33,9 @@ export class UserService {
         return await this.userRepository.findOne({
             select: ['id', 'email', 'password', 'username', 'active', 'role'],
             where: {
-                username
-            }
-        })
+                username,
+            },
+        });
     }
 
     async findById(id: number): Promise<User> {
@@ -56,7 +55,6 @@ export class UserService {
 
         return await this.userRepository.save(user);
     }
-
 
     async emailExists(email: string): Promise<boolean> {
         const userExists = await this.userRepository.find({ email });

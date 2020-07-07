@@ -15,7 +15,7 @@ export const registerUserSchema = joi.object({
 export const adminUserSchema = joi.object({
     password: joi.string().required(),
     username: joi.string().required(),
-})
+});
 
 export class UserDto {
     readonly username: string;

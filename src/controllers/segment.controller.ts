@@ -1,4 +1,13 @@
-import { Controller, Get, Post, ConflictException, HttpStatus, Body, UseGuards, BadRequestException } from '@nestjs/common';
+import {
+    Controller,
+    Get,
+    Post,
+    ConflictException,
+    HttpStatus,
+    Body,
+    UseGuards,
+    BadRequestException,
+} from '@nestjs/common';
 import { SegmentService } from '../services/segment.service';
 import { Segment } from '../model/segment.entity';
 import { AuthGuard } from '@nestjs/passport';
@@ -27,6 +36,6 @@ export class SegmentController {
         return {
             statusCode: HttpStatus.OK,
             message: 'Segment created',
-        }
+        };
     }
 }

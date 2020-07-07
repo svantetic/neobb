@@ -12,9 +12,7 @@ import { PostService } from 'src/services/post.service';
 import { Post } from 'src/model/post.entity';
 
 @Module({
-    imports: [
-        TypeOrmModule.forFeature([Thread, User, Section, Segment, Post]),
-    ],
+    imports: [TypeOrmModule.forFeature([Thread, User, Section, Segment, Post])],
     controllers: [ThreadController],
     providers: [ThreadService, UserService, SectionService, PostService],
     exports: [ThreadService],

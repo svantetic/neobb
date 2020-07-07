@@ -1,4 +1,4 @@
-import {Entity, PrimaryGeneratedColumn, Column, OneToMany} from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { Section } from './section.entity';
 @Entity()
 export class Segment {
@@ -8,6 +8,9 @@ export class Segment {
     @Column()
     name: string;
 
-    @OneToMany(type => Section, section => section.segment)
+    @OneToMany(
+        type => Section,
+        section => section.segment,
+    )
     sections: Section[];
 }

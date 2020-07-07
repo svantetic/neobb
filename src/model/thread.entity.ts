@@ -1,7 +1,15 @@
-import {Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne, CreateDateColumn, UpdateDateColumn} from "typeorm";
-import { Post } from "./post.entity";
-import { User } from "./user.entity";
-import { Section } from "./section.entity";
+import {
+    Entity,
+    PrimaryGeneratedColumn,
+    Column,
+    OneToMany,
+    ManyToOne,
+    CreateDateColumn,
+    UpdateDateColumn,
+} from 'typeorm';
+import { Post } from './post.entity';
+import { User } from './user.entity';
+import { Section } from './section.entity';
 
 @Entity()
 export class Thread {
@@ -11,13 +19,22 @@ export class Thread {
     @Column()
     name: string;
 
-    @OneToMany(type => Post, post => post.thread)
+    @OneToMany(
+        type => Post,
+        post => post.thread,
+    )
     posts: Post[];
 
-    @ManyToOne(type => User, user => user.threads)
+    @ManyToOne(
+        type => User,
+        user => user.threads,
+    )
     author: User;
 
-    @ManyToOne(type => Section, section => section.threads)
+    @ManyToOne(
+        type => Section,
+        section => section.threads,
+    )
     section: Section;
 
     @CreateDateColumn()

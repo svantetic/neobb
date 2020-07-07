@@ -1,6 +1,14 @@
-import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, OneToOne, JoinColumn} from "typeorm";
+import {
+    Entity,
+    PrimaryGeneratedColumn,
+    Column,
+    ManyToOne,
+    OneToMany,
+    OneToOne,
+    JoinColumn,
+} from 'typeorm';
 import { Segment } from './segment.entity';
-import { Thread } from "./thread.entity";
+import { Thread } from './thread.entity';
 import { Post } from './post.entity';
 
 @Entity()
@@ -18,10 +26,16 @@ export class Section {
     @JoinColumn()
     latestPost: Post;
 
-    @ManyToOne(type => Segment, segment => segment.sections)
+    @ManyToOne(
+        type => Segment,
+        segment => segment.sections,
+    )
     segment: Segment;
 
-    @OneToMany(type => Thread, thread => thread.section)
+    @OneToMany(
+        type => Thread,
+        thread => thread.section,
+    )
     threads: Thread[];
 }
 
@@ -29,5 +43,5 @@ export interface Stats {
     stats: {
         threads: number;
         posts: number;
-    }
+    };
 }
