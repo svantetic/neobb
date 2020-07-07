@@ -81,6 +81,14 @@ export class UserController {
     @Render('client/user/profile')
     @UseGuards(AuthenticatedGuard)
     @UseFilters(LoginRequiredFilter)
+    async myProfile(@Req() request: Request) {
+        return;
+    }
+
+    @Get('user/:user')
+    @Render('client/user/profile')
+    @UseGuards(AuthenticatedGuard)
+    @UseFilters(LoginRequiredFilter)
     async profile(@Req() request: Request) {
         return;
     }
