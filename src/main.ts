@@ -44,6 +44,7 @@ async function bootstrap() {
   app.use(function(req, res, next) {
     if (req.session.passport && req.session.passport.user) {
       res.locals.user = req.session.passport.user;
+      console.log(req.session.passport);
     }
     res.locals.flash = Object.values(req.flash()).join(', ');
     next();   

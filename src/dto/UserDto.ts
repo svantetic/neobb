@@ -1,4 +1,5 @@
 import * as joi from 'joi';
+import { UserRole } from 'src/model/user.entity';
 
 export const userSchema = joi.object({
     password: joi.string().required(),
@@ -19,6 +20,7 @@ export const adminUserSchema = joi.object({
 export class UserDto {
     readonly username: string;
     readonly password: string;
+    readonly role: UserRole;
 }
 
 export class RegisterUserDto {

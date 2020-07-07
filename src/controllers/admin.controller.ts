@@ -1,4 +1,4 @@
-import { Controller, Get, Render, Post, Body, HttpStatus, UsePipes, ConflictException, UseGuards, BadRequestException, Param, Res, Redirect, Request } from '@nestjs/common';
+import { Controller, Get, Render, Post, Body, HttpStatus, UsePipes, ConflictException, UseGuards, BadRequestException, Param, Res, Redirect, Request, UseFilters } from '@nestjs/common';
 import { UserDto, userSchema, adminUserSchema, AdminUserDto } from 'src/dto/UserDto';
 import { UserService } from 'src/services/user.service';
 import { AuthService } from 'src/services/auth.service';
@@ -7,31 +7,18 @@ import { Response } from 'express';
 import { AuthGuard } from '@nestjs/passport';
 import { LoginGuard } from 'src/guards/login.guard';
 import { AuthenticatedGuard } from 'src/guards/authenticated.guard';
+import { RolesGuard } from 'src/guards/roles.guard';
+import { Roles } from 'src/decorators/roles.decorator';
+import { InsufficientPermissionsException } from 'src/exceptions/InsufficientPermissionsException';
+import { PermissionsFilter } from 'src/filters/permissions.filter';
+import { UserRole } from 'src/model/user.entity';
 
 @Controller('admin')
 export class AdminController {
 constructor(private readonly authService: AuthService) {}
-
-  @Get('/login')
-  @Render('admin/login')
-  adminLogin() {
-    return;
-  }
-
-  @UseGuards(LoginGuard)
-  @Post('login')
-  @UsePipes(new UserValidationPipePipe(adminUserSchema))
-  async login(@Body() user: AdminUserDto, @Res() res: Response) {
-    const loggedIn = await this.authService.validateUser(user);
-   
-    if (loggedIn === null) {
-      return res.redirect('/admin/login')
-    }
-
-    return res.redirect('/admin/');
-  }
-
-  @UseGuards(AuthenticatedGuard)
+  @Roles(UserRole.ADMIN)
+  @UseGuards(AuthenticatedGuard, RolesGuard)
+  @UseFilters(PermissionsFilter)
   @Get('/')
   @Render('admin/index')
   adminRoot() {

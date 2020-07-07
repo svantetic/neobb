@@ -32,7 +32,7 @@ export class UserService {
 
     async findByName(username: string): Promise<User> {
         return await this.userRepository.findOne({
-            select: ['id', 'email', 'password', 'username', 'active'],
+            select: ['id', 'email', 'password', 'username', 'active', 'role'],
             where: {
                 username
             }

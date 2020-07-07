@@ -54,4 +54,5 @@ export class ThreadController {
             response.redirect(`/section/${threadCreated.section.id}`);
         }
     }
+
 }

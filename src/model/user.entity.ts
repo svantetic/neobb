@@ -3,6 +3,12 @@ import bcrypt = require('bcryptjs');
 import { Thread } from './thread.entity';
 import { Post } from './post.entity';
 
+export enum UserRole {
+    USER = 'USER',
+    ADMIN = 'ADMIN',
+    MODERATOR = 'MODERATOR',
+}
+
 @Entity()
 export class User {
     @PrimaryGeneratedColumn()
@@ -19,6 +25,14 @@ export class User {
 
     @Column({ select: false })
     password: string;
+
+    @Column({
+        type: 'enum',
+        enum: UserRole,
+        default: UserRole.USER,
+        nullable: false,
+    })
+    role: UserRole;
 
     @Column({ select: false, default: false })
     active: boolean;

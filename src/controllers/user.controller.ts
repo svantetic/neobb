@@ -63,31 +63,4 @@ export class UserController {
     return;
   }
   
-  // @Get()
-  // async root() {
-  //   return this.userService.findAll();
-  // }
-
-  // @Post('login')
-  // @UsePipes(new UserValidationPipePipe(userSchema))
-  // async login(@Body() user: UserDto, @Res() res: Response) {
-  //   return this.authService.login(user, res, 'index');
-  // }
-
-  // @Post('register')
-  // @UsePipes(new UserValidationPipePipe(registerUserSchema))
-  // async create(@Body() user: RegisterUserDto) {
-  //   const userExists = await this.userService.emailExists(user.email);
-
-  //   if (userExists) {
-  //     throw new ConflictException('User already exists');
-  //   }
-
-  //   this.authService.register(user);
-
-  //   return {
-  //     statusCode: HttpStatus.OK,
-  //     message: 'User registed',
-  //   };
-  // }
 }
