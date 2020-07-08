@@ -21,6 +21,8 @@ export class LoginRequiredFilter implements ExceptionFilter {
         ) {
             request.flash('loginRequired', 'Login is required');
             response.redirect('/login');
+        } else {
+            response.redirect('/error');
         }
     }
 }
