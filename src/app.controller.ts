@@ -49,4 +49,10 @@ export class AppController {
     search() {
         return;
     }
+
+    @Get('error')
+    @Render('client/error/index')
+    error() {
+        return;
+    }
 }
