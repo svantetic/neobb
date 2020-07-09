@@ -1,10 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { User } from '../model/user.entity';
+import { Repository, FindConditions, FindOperator } from 'typeorm';
+import { User, UserRole } from '../model/user.entity';
 import { UserDto, RegisterUserDto } from '../dto/UserDto';
 import { Request } from 'express';
 import bcrypt = require('bcryptjs');
+import { Http2ServerResponse } from 'http2';
+import { username } from 'src/config/typeorm';
 
 @Injectable()
 export class UserService {
@@ -13,9 +15,10 @@ export class UserService {
         private userRepository: Repository<User>,
     ) {}
 
-    async findAll(): Promise<User[]> {
+    async findAll(additionalFields?: Array<keyof User>): Promise<User[]> {
+        const extra = additionalFields ? additionalFields : [];
         return await this.userRepository.find({
-            select: ['username', 'avatar'],
+            select: ['username', 'avatar', ...extra],
             relations: ['threads', 'posts'],
         });
     }
@@ -69,5 +72,26 @@ export class UserService {
         const userToActivate = await this.userRepository.findOne(user.id);
         userToActivate.active = true;
         return this.userRepository.manager.save(userToActivate);
+    }
+
+    private getPromotedRole(role: UserRole): UserRole {
+        switch (role) {
+            case UserRole.USER:
+                return UserRole.MODERATOR;
+            case UserRole.MODERATOR:
+                return UserRole.ADMIN;
+            default:
+                return UserRole.ADMIN;
+        }
+    }
+
+    async promoteUser(user: User): Promise<User> {
+        const existingUser = await this.findById(user.id);
+        if (!existingUser || (await existingUser.username) !== user.username) {
+            throw new NotFoundException();
+        }
+
+        existingUser.role = this.getPromotedRole(user.role);
+        return this.userRepository.manager.save(existingUser);
     }
 }

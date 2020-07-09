@@ -17,6 +17,11 @@ export enum UserRole {
     MODERATOR = 'MODERATOR',
 }
 
+export interface UserPromotionResponse {
+    id: number;
+    role: UserRole;
+}
+
 @Entity()
 export class User {
     @PrimaryGeneratedColumn()
