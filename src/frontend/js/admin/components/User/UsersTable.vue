@@ -22,56 +22,23 @@
                         <td>{{ user.updatedAt }}</td>
                         <td>{{ user.active }}</td>
                         <td>
-                            <v-btn
-                                xs
-                                color="primary"
-                                :disabled="disableEdit(user.role)"
-                                @click="changeRole(user)"
-                            >
-                                {{
-                                    user.role === 'USER'
-                                        ? 'Promote'
-                                        : 'Downgrade'
-                                }}</v-btn
-                            >
-                            <v-btn
-                                xs
-                                color="secondary"
-                                :disabled="disableEdit(user.role)"
-                                @click.stop="changeStatus(user)"
-                                >{{
-                                    user.active ? 'Deactivate' : 'Activate'
-                                }}</v-btn
-                            >
+                            <ChangeRoleButton
+                                @show-change-role-dialog="showChangeRoleDialog"
+                                :user="user"
+                            />
+                            <!-- <DeactivateButton/> -->
                         </td>
                     </tr>
                 </tbody>
             </template>
         </v-simple-table>
-        <v-dialog v-model="promoteDialog" width="400">
-            <v-card>
-                <v-card-title class="headline">Promote user</v-card-title>
-                <v-card-text>
-                    Are you sure you want to promote
-                    {{ selectedUser.username }}?
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn
-                        color="red darken-1"
-                        text
-                        @click="promoteDialog = false"
-                        >Cancel</v-btn
-                    >
-                    <v-btn
-                        color="green darken-1"
-                        text
-                        @click="promoteUser(selectedUser)"
-                        >Promote</v-btn
-                    >
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
+        <ChangeRoleDialog
+            :visible="changeRoleDialog"
+            :user="selectedUser"
+            @change-user-role="promoteUser"
+            @hide-change-role-dialog="changeRoleDialog = false"
+        />
+        <!-- <DeactivateDialog /> -->
         <v-snackbar
             v-if="selectedUser.username"
             color="success"
@@ -87,25 +54,32 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Prop } from 'vue-property-decorator';
+import ChangeRoleButton from './Buttons/ChangeRoleButton.vue';
+import DeactivateButton from './Buttons/DeactivateButton.vue';
+import ChangeRoleDialog from './Dialogs/ChangeRoleDialog.vue';
+import DeactivateDialog from './Dialogs/DeactivateDialog.vue';
 import axios from 'axios';
 
 @Component({
     components: {
-        EditForm,
+        ChangeRoleButton,
+        DeactivateButton,
+        ChangeRoleDialog,
+        DeactivateDialog,
     },
 })
 export default class UsersTable extends Vue {
     @Prop() readonly users: Array<any>;
     statusDialog: boolean = false;
-    promoteDialog: boolean = false;
+    changeRoleDialog: boolean = false;
     notification: boolean = false;
     selectedUser: any = {};
 
     disableEdit(role: string) {
         return role === 'ADMIN';
     }
-    changeRole(user) {
-        this.promoteDialog = true;
+    showChangeRoleDialog(user) {
+        this.changeRoleDialog = true;
         this.selectedUser = user;
     }
 
@@ -125,7 +99,7 @@ export default class UsersTable extends Vue {
         this.selectedUser.role = response.data.user.role;
         this.notification = true;
         this.$emit('user-promoted', response.data.user);
-        this.promoteDialog = false;
+        this.changeRoleDialog = false;
     }
 }
 </script>
