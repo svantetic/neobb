@@ -16,6 +16,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
         const response = ctx.getResponse<Response>();
         const request = ctx.getRequest<Request>();
         const status = exception.getStatus();
+
         if (
             exception instanceof UnauthorizedException ||
             exception instanceof ForbiddenException
@@ -23,10 +24,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
             request.flash('loginError', 'Wrong password');
             response.redirect('back');
         } else if (exception instanceof UserNotActivatedException) {
-            request.flash(
-                'notActivated',
-                new UserNotActivatedException().message,
-            );
+            request.flash('notActivated', exception.message);
             response.redirect('back');
         } else {
             response.redirect('/error');
