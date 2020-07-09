@@ -2,11 +2,13 @@
     "compilerOptions": {
         "outDir": "./public/js/",
         "sourceMap": true,
-        "noImplicitAny": true,
+        "noImplicitAny": false,
         "module": "commonjs",
+        "baseUrl": ".",
         "target": "es6",
         "jsx": "preserve",
         "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
         "esModuleInterop": true,
         "lib": [
             "esnext",
@@ -14,7 +16,9 @@
             "dom.iterable",
             "scripthost"
         ],
-        
+        "paths": {
+            "@": ["src/*"]
+        }
     },
     "include": [
         "src/frontend/**/*.ts",
