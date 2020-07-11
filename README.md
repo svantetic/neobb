@@ -27,7 +27,7 @@ NeBB is homage to internet forum engines such as phpByPrzemo, VBulletin or MyBB 
 - TypeScript
 - TypeORM
 - Tailwind
-- React
+- Vue + Vuetify
 
 More in package.json
 
