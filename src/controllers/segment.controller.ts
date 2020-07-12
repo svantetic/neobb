@@ -12,15 +12,15 @@ import { SegmentService } from '../services/segment.service';
 import { Segment } from '../model/segment.entity';
 import { AuthGuard } from '@nestjs/passport';
 
-@Controller('segment')
+@Controller()
 export class SegmentController {
     constructor(private readonly service: SegmentService) {}
-    @Get()
+    @Get('/segment')
     async index(): Promise<Segment[]> {
         return this.service.findAll();
     }
 
-    @Post()
+    @Post('/segment')
     async create(@Body() segment: Segment) {
         const segmentExists = await this.service.exists(segment);
 

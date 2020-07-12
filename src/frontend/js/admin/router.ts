@@ -1,6 +1,6 @@
 import VueRouter from 'vue-router';
-import AdminDashboard from './components/AdminDashboard.vue';
-import AdminStructure from './components/AdminStructure.vue';
+import AdminDashboard from './views/AdminDashboard.vue';
+import AdminStructure from './views/AdminStructure.vue';
 import UsersView from './views/UsersView.vue';
 
 const Router = new VueRouter({

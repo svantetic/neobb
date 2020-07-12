@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+    Injectable,
+    NotFoundException,
+    HttpException,
+    UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, FindConditions, FindOperator } from 'typeorm';
 import { User, UserRole } from '../model/user.entity';
@@ -93,5 +98,18 @@ export class UserService {
 
         existingUser.role = this.getPromotedRole(user.role);
         return this.userRepository.manager.save(existingUser);
+    }
+
+    async ban(user: User): Promise<User> {
+        const existingUser = await this.findById(user.id);
+        if (!existingUser) {
+            throw new NotFoundException();
+        }
+
+        if (existingUser.role === UserRole.ADMIN) {
+            throw new UnauthorizedException('You cant ban admin user');
+        }
+
+        return this.userRepository.remove(existingUser);
     }
 }

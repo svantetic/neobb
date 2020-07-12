@@ -17,7 +17,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { ThreadService } from 'src/services/thread.service';
 import { PostService } from 'src/services/post.service';
 
-@Controller('section')
+@Controller()
 export class SectionController {
     constructor(
         private readonly service: SectionService,
@@ -29,7 +29,7 @@ export class SectionController {
         return this.service.findAll();
     }
 
-    @Get(':id')
+    @Get('/section/:id')
     @Render('client/section/index')
     async findOne(@Param('id') id): Promise<any> {
         const section = await this.service.findById(id);
@@ -49,7 +49,7 @@ export class SectionController {
         };
     }
 
-    @Post()
+    @Post('/section')
     async create(@Body() section: Section) {
         const sectionExists = await this.service.exists(section);
 
@@ -66,6 +66,7 @@ export class SectionController {
         return {
             statusCode: HttpStatus.OK,
             message: 'Section created',
+            section: created,
         };
     }
 }

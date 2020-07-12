@@ -22,7 +22,9 @@ export class Section {
     @Column()
     description: string;
 
-    @OneToOne(type => Post)
+    @OneToOne(type => Post, {
+        onDelete: 'SET NULL',
+    })
     @JoinColumn()
     latestPost: Post;
 

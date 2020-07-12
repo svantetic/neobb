@@ -1,5 +1,5 @@
 <template>
-    <div v-if="segments.length > 0">
+    <div v-if="!loading">
         Forum shape
         <v-expansion-panels multiple v-model="panel">
             <v-expansion-panel
@@ -11,10 +11,15 @@
                     {{ segment.name }}
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
-                    <div v-for="section in segment.sections" :key="section.id">
-                        <p class="text-subtitle-1">{{ section.name }}</p>
-                        <p class="text-subtitle-2">{{ section.description }}</p>
-                    </div>
+                    <Section
+                        v-for="(section, i) in segment.sections"
+                        :key="i"
+                        :section="section"
+                    />
+                    <SectionForm
+                        @section-created="addSection"
+                        :segment="segment.id"
+                    />
                 </v-expansion-panel-content>
             </v-expansion-panel>
         </v-expansion-panels>
@@ -27,22 +32,49 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
+import Section from '../components/Section/Section.vue';
+import SectionForm from '../components/Section/SectionForm.vue';
 
-@Component
+@Component({
+    components: {
+        Section,
+        SectionForm,
+    },
+})
 export default class AdminStructure extends Vue {
-    segments: [] = [];
+    segments: any[] = [];
     panel: number[] = [];
+    sectionForm: boolean = false;
+    loading: boolean = false;
+    newSection = {
+        name: '',
+        description: '',
+    };
     mounted() {
+        this.loading = true;
         fetch('/segment')
             .then(response => {
                 return response.json();
             })
             .then((segments: any) => {
+                this.loading = false;
                 this.segments = segments;
                 this.panel = [...Array(this.segments.length).keys()].map(
                     (k, i) => i,
                 );
             });
+    }
+
+    showSectionForm() {
+        this.sectionForm = true;
+    }
+
+    addSection(section) {
+        const { segment } = section;
+        const segmentToAdd = this.segments.find(
+            existingSegment => existingSegment.id === segment,
+        );
+        segmentToAdd.sections.push(section);
     }
 }
 </script>

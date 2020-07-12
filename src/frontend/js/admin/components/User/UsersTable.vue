@@ -26,6 +26,12 @@
                                 @show-change-role-dialog="showChangeRoleDialog"
                                 :user="user"
                             />
+
+                            <BanButton
+                                v-if="!isAdmin(user)"
+                                @show-ban-dialog="showBanDialog"
+                                :user="user"
+                            />
                             <!-- <DeactivateButton/> -->
                         </td>
                     </tr>
@@ -39,13 +45,19 @@
             @hide-change-role-dialog="changeRoleDialog = false"
         />
         <!-- <DeactivateDialog /> -->
+        <BanDialog
+            :visible="banDialogVisible"
+            :user="selectedUser"
+            @ban-user="banUser"
+            @hide-ban-dialog="banDialogVisible = false"
+        />
         <v-snackbar
             v-if="selectedUser.username"
             color="success"
             v-model="notification"
             timeout="2000"
         >
-            {{ selectedUser.username }} promoted to {{ selectedUser.role }}
+            {{ notificationText }}
         </v-snackbar>
     </div>
 </template>
@@ -58,6 +70,8 @@ import ChangeRoleButton from './Buttons/ChangeRoleButton.vue';
 import DeactivateButton from './Buttons/DeactivateButton.vue';
 import ChangeRoleDialog from './Dialogs/ChangeRoleDialog.vue';
 import DeactivateDialog from './Dialogs/DeactivateDialog.vue';
+import BanButton from './Buttons/BanButton.vue';
+import BanDialog from './Dialogs/BanDialog.vue';
 import axios from 'axios';
 
 @Component({
@@ -66,21 +80,48 @@ import axios from 'axios';
         DeactivateButton,
         ChangeRoleDialog,
         DeactivateDialog,
+        BanButton,
+        BanDialog,
     },
 })
 export default class UsersTable extends Vue {
     @Prop() readonly users: Array<any>;
     statusDialog: boolean = false;
     changeRoleDialog: boolean = false;
+    banDialogVisible: boolean = false;
+
     notification: boolean = false;
+    notificationText: string = '';
     selectedUser: any = {};
+
+    isAdmin(user) {
+        return user.role === 'ADMIN';
+    }
 
     disableEdit(role: string) {
         return role === 'ADMIN';
     }
+
     showChangeRoleDialog(user) {
         this.changeRoleDialog = true;
         this.selectedUser = user;
+    }
+
+    showBanDialog(user) {
+        this.banDialogVisible = true;
+        this.selectedUser = user;
+    }
+
+    async banUser(user) {
+        this.banDialogVisible = false;
+        const { id } = user;
+        const response = await axios.post('/admin/user/ban', {
+            id,
+        });
+
+        this.notification = true;
+        this.notificationText = `${user.username} banned`;
+        this.$emit('user-banned', user.username);
     }
 
     changeStatus(user) {
@@ -97,6 +138,7 @@ export default class UsersTable extends Vue {
         });
 
         this.selectedUser.role = response.data.user.role;
+        this.notificationText = `${this.selectedUser.username} promoted to ${this.selectedUser.role}`;
         this.notification = true;
         this.$emit('user-promoted', response.data.user);
         this.changeRoleDialog = false;

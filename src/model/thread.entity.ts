@@ -28,6 +28,9 @@ export class Thread {
     @ManyToOne(
         type => User,
         user => user.threads,
+        {
+            onDelete: 'CASCADE',
+        },
     )
     author: User;
 

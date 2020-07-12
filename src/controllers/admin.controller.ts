@@ -33,7 +33,12 @@ import { RolesGuard } from 'src/guards/roles.guard';
 import { Roles } from 'src/decorators/roles.decorator';
 import { InsufficientPermissionsException } from 'src/exceptions/InsufficientPermissionsException';
 import { PermissionsFilter } from 'src/filters/permissions.filter';
-import { UserRole, User, UserPromotionResponse } from 'src/model/user.entity';
+import {
+    UserRole,
+    User,
+    UserPromotionResponse,
+    UserBannedResponse,
+} from 'src/model/user.entity';
 import { LoginRequiredFilter } from 'src/filters/login-required.filter';
 
 @Controller('admin')
@@ -90,6 +95,25 @@ export class AdminController {
             user: {
                 id,
                 role,
+            },
+        };
+    }
+
+    @Post('/user/ban')
+    async ban(
+        @Body() user: User,
+    ): Promise<{ message: string; user: UserBannedResponse }> {
+        if (!user || !user.id) {
+            throw new BadRequestException('Bad request');
+        }
+
+        const { id, username } = await this.userService.ban(user);
+
+        return {
+            message: 'User banned',
+            user: {
+                id,
+                username,
             },
         };
     }

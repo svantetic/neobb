@@ -21,12 +21,18 @@ export class Post {
     @ManyToOne(
         type => Thread,
         thread => thread.posts,
+        {
+            onDelete: 'CASCADE',
+        },
     )
     thread: Thread;
 
     @ManyToOne(
         type => User,
         user => user.posts,
+        {
+            onDelete: 'CASCADE',
+        },
     )
     author: User;
 

@@ -1,6 +1,10 @@
 <template>
     <v-container>
-        <UsersTable :users="users" @user-promoted="applyUserPromotion" />
+        <UsersTable
+            :users="users"
+            @user-promoted="applyUserPromotion"
+            @user-banned="removeUser"
+        />
     </v-container>
 </template>
 
@@ -31,6 +35,10 @@ export default class UsersView extends Vue {
         }
 
         userToPromote.role = user.role;
+    }
+
+    removeUser(user) {
+        return;
     }
 }
 </script>

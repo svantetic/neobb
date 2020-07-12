@@ -21,7 +21,10 @@ export interface UserPromotionResponse {
     id: number;
     role: UserRole;
 }
-
+export interface UserBannedResponse {
+    id: number;
+    username: string;
+}
 @Entity()
 export class User {
     @PrimaryGeneratedColumn()
@@ -58,12 +61,18 @@ export class User {
     @OneToMany(
         type => Thread,
         thread => thread.author,
+        {
+            onDelete: 'CASCADE',
+        },
     )
     threads: Thread[];
 
     @OneToMany(
         type => Post,
         post => post.author,
+        {
+            onDelete: 'CASCADE',
+        },
     )
     posts: Post[];
 
