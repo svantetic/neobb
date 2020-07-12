@@ -3,7 +3,7 @@ import { join } from 'path';
 const ORMConfig = {
     driver: 'mysql',
     type: 'mysql',
-    host: 'localhost',
+    host: process.env.TYPEORM_HOST,
     username: process.env.TYPEORM_USERNAME,
     password: process.env.TYPEORM_PASSWORD,
     database: process.env.TYPEORM_DATABASE,
