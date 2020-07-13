@@ -70,6 +70,7 @@ export default class SectionForm extends Vue {
             this.$emit('section-created', response.data.section);
             this.newSection.name = '';
             this.newSection.description = '';
+            this.active = false;
         }
     }
 }

@@ -31,6 +31,9 @@ export class Section {
     @ManyToOne(
         type => Segment,
         segment => segment.sections,
+        {
+            onDelete: 'CASCADE',
+        },
     )
     segment: Segment;
 

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Segment } from '../model/segment.entity';
 import { Repository } from 'typeorm';
@@ -39,5 +39,31 @@ export class SegmentService {
         };
 
         return await this.repository.save(newSegment);
+    }
+
+    async delete(segment: Segment): Promise<Segment> {
+        try {
+            const exists = await this.exists(segment);
+
+            if (!exists) {
+                throw new NotFoundException('Segment does not exists');
+            }
+            return await this.repository.remove(segment);
+        } catch (error) {
+            Logger.log(error);
+        }
+    }
+
+    async update(id: number, name: string): Promise<boolean> {
+        const updated = await this.repository.update(
+            {
+                id,
+            },
+            {
+                name,
+            },
+        );
+
+        return updated.affected > 0;
     }
 }
