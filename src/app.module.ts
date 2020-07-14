@@ -17,26 +17,24 @@ import { AppGateway } from './app.gateway';
 import ORMConfig from './config/database';
 
 @Module({
-  imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      load: [ORMConfig]
-    }),
-    TypeOrmModule.forRootAsync({
-      useFactory: (config: ConfigService) => config.get('database'),
-      inject: [ConfigService],
-    }),
-    AuthModule,
-    PostModule,
-    UserModule,
-    SegmentModule,
-    SectionModule,
-    ThreadModule,
-    AdminModule,
-  ],
-  controllers: [AppController],
-  providers: [AppService, AppGateway],
+    imports: [
+        ConfigModule.forRoot({
+            isGlobal: true,
+            load: [ORMConfig],
+        }),
+        TypeOrmModule.forRootAsync({
+            useFactory: (config: ConfigService) => config.get('database'),
+            inject: [ConfigService],
+        }),
+        AuthModule,
+        PostModule,
+        UserModule,
+        SegmentModule,
+        SectionModule,
+        ThreadModule,
+        AdminModule,
+    ],
+    controllers: [AppController],
+    providers: [AppService, AppGateway],
 })
-export class AppModule {
-  
-}
+export class AppModule {}

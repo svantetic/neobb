@@ -1,6 +1,6 @@
 <template>
     <div v-if="!loading">
-        <v-expansion-panels multiple v-model="panel">
+        <v-expansion-panels multiple v-model="segmentMapForPanel">
             <v-expansion-panel
                 mandatory
                 :readonly="readonly"
@@ -32,7 +32,7 @@
                                 <v-btn
                                     text
                                     color="primary"
-                                    @click.stop="renameSegment"
+                                    @click.stop="applyRename"
                                     >Apply</v-btn
                                 >
                                 <v-btn text @click.stop="hideRename"
@@ -63,7 +63,7 @@
                     />
                 </v-expansion-panel-content>
             </v-expansion-panel>
-            <SegmentForm @segment-created="addCreatedSegment" />
+            <SegmentForm />
         </v-expansion-panels>
         <v-dialog max-width="320" v-model="deleteSegmentDialog.visible">
             <v-card>
@@ -98,7 +98,8 @@ import Section from '../components/Section/Section.vue';
 import SectionForm from '../components/Section/SectionForm.vue';
 import SegmentForm from '../components/Segment/SegmentForm.vue';
 import axios from 'axios';
-import { log } from 'util';
+import API from '../api';
+import { Getter, Action } from 'vuex-class';
 
 @Component({
     components: {
@@ -108,7 +109,14 @@ import { log } from 'util';
     },
 })
 export default class AdminStructure extends Vue {
-    segments: any[] = [];
+    @Getter('segments') segments;
+    @Action('setSegments') setSegments: (segments) => void;
+    @Action('deleteSegment') removeDeletedSegment: (id: number) => void;
+    @Action('addSection') addSection: (section) => void;
+    @Action('renameSegment') renameSegment: (payload: {
+        id: number;
+        name: string;
+    }) => void;
     panel: number[] = [];
     sectionForm: boolean = false;
     loading: boolean = false;
@@ -133,19 +141,16 @@ export default class AdminStructure extends Vue {
         name: '',
         description: '',
     };
-    mounted() {
+
+    async mounted() {
         this.loading = true;
-        fetch('/segment')
-            .then(response => {
-                return response.json();
-            })
-            .then((segments: any) => {
-                this.loading = false;
-                this.segments = segments;
-                this.panel = [...Array(this.segments.length).keys()].map(
-                    (k, i) => i,
-                );
-            });
+        const segments = await API.fetchSegments();
+        this.setSegments(segments);
+        this.loading = false;
+    }
+
+    get segmentMapForPanel(): number[] {
+        return [...Array(this.segments.length).keys()].map((k, i) => i);
     }
 
     showSectionForm() {
@@ -164,17 +169,17 @@ export default class AdminStructure extends Vue {
         this.readonly = false;
     }
 
-    async renameSegment() {
+    async applyRename() {
         try {
-            const response = await axios.patch(`/segment/${this.rename.id}`, {
-                name: this.rename.segmentName,
+            const { id, segmentName } = this.rename;
+            const response = await API.renameSegment(id, segmentName);
+            this.notification = true;
+            this.notificationText = 'Segment renamed';
+            this.renameSegment({
+                id,
+                name: segmentName,
             });
-            if (response.data.statusCode === 200) {
-                this.notification = true;
-                this.notificationText = 'Segment renamed';
-                this.updateSegment();
-                this.hideRename();
-            }
+            this.hideRename();
         } catch (error) {
             this.notification = true;
             this.notificationText = error;
@@ -193,21 +198,10 @@ export default class AdminStructure extends Vue {
     async deleteSegment() {
         const { id, name } = this.deleteSegmentDialog.segment;
         try {
-            const response = await axios.delete('/segment', {
-                data: {
-                    id,
-                    name,
-                },
-            });
-
-            if (response.data.statusCode === 200) {
-                this.notification = true;
-                this.notificationText = 'Segment deleted';
-                this.removeDeletedSegment(this.deleteSegmentDialog.segment);
-            } else {
-                this.notification = true;
-                this.notificationText = response.statusText;
-            }
+            const deleted = await API.deleteSegment(id, name);
+            this.notification = true;
+            this.notificationText = 'Segment deleted';
+            this.removeDeletedSegment(id);
         } catch (error) {
             this.notification = true;
             this.notificationText = error.message;
@@ -219,45 +213,6 @@ export default class AdminStructure extends Vue {
         this.deleteSegmentDialog.visible = false;
         this.deleteSegmentDialog.segment.name = '';
         this.deleteSegmentDialog.segment.id = '';
-    }
-
-    addSection(section) {
-        console.log('should add section', section);
-        const { segment } = section;
-        const segmentToAdd = this.segments.find(
-            existingSegment => existingSegment.id === segment,
-        );
-        console.log(segmentToAdd);
-        segmentToAdd.sections.push(section);
-    }
-
-    addCreatedSegment(segment) {
-        const newSegment = {
-            ...segment,
-            sections: [],
-        };
-        this.segments.push(newSegment);
-    }
-
-    removeDeletedSegment(segment) {
-        const indexToRemove = this.segments.findIndex(
-            existing => existing.id === segment.id,
-        );
-        console.log(indexToRemove);
-        if (indexToRemove > -1) {
-            this.segments.splice(indexToRemove, 1);
-        }
-    }
-
-    updateSegment() {
-        const toUpdate = this.segments.find(
-            existing => existing.id === this.rename.id,
-        );
-        if (!toUpdate) {
-            return;
-        }
-
-        toUpdate.name = this.rename.segmentName;
     }
 }
 </script>

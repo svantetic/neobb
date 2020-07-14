@@ -31,10 +31,14 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import axios from 'axios';
 import { Prop } from 'vue-property-decorator';
+import { mapActions } from 'vuex';
+import API from '../../api';
+import { Action } from 'vuex-class';
 
 @Component
 export default class SectionForm extends Vue {
     @Prop(Number) segment: number;
+    @Action('addSection') addSectionToSegment: (segment: any) => void;
     $refs: {
         form: HTMLFormElement;
     };
@@ -57,21 +61,18 @@ export default class SectionForm extends Vue {
 
     async addSection() {
         this.$refs.form.validate();
+
         if (!this.isValid) {
             return;
         }
+
         const { name, description } = this.newSection;
-        const response = await axios.post('/section', {
-            name,
-            description,
-            segment: this.segment,
-        });
-        if (response.status) {
-            this.$emit('section-created', response.data.section);
-            this.newSection.name = '';
-            this.newSection.description = '';
-            this.active = false;
-        }
+        const response = await API.addSection(name, description, this.segment);
+
+        this.addSectionToSegment(response.data.section);
+        this.newSection.name = '';
+        this.newSection.description = '';
+        this.active = false;
     }
 }
 </script>

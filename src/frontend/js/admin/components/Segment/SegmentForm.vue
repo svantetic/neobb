@@ -26,6 +26,8 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import axios from 'axios';
+import { Action } from 'vuex-class';
+import API from '../../api';
 
 @Component
 export default class SegmentForm extends Vue {
@@ -40,19 +42,16 @@ export default class SegmentForm extends Vue {
         name: '',
     };
 
+    @Action('addSegment') addSegment: (segment: any) => void;
+
     async createSegment() {
         this.$refs.form.validate();
         if (!this.valid) {
             return;
         }
 
-        const response = await axios.post('/segment', {
-            name: this.newSegment.name,
-        });
-
-        if (response.status === 201) {
-            this.$emit('segment-created', response.data.segment);
-        }
+        this.addSegment(await API.addSegment(this.newSegment.name));
+        this.active = false;
     }
 }
 </script>
