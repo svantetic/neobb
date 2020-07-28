@@ -47,7 +47,11 @@ export class UserController {
     @UseFilters(new HttpExceptionFilter())
     login(@Req() request: any, @Res() response: Response): void {
         if (request.session.passport.user) {
-            return response.redirect('/');
+            const redirect = new String(
+                request.session.redirect ? request.session.redirect : '/',
+            );
+            request.session.redirect = '';
+            return response.redirect(redirect.toString());
         }
     }
 

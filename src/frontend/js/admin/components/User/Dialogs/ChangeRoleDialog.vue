@@ -27,20 +27,16 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Prop } from 'vue-property-decorator';
 import { ChangeUserRoleAction } from '../interfaces';
-
-@Component
+import { UserRoleMixin } from '../mixins';
+@Component({
+    mixins: [UserRoleMixin],
+})
 export default class ChangeRoleDialog extends Vue {
     @Prop(Boolean) visible: boolean = false;
     @Prop() user: {
         userame: string;
         role: string;
     };
-
-    get roleAction(): ChangeUserRoleAction {
-        return this.user.role === 'USER'
-            ? ChangeUserRoleAction.PROMOTE
-            : ChangeUserRoleAction.DOWNGRADE;
-    }
 
     changeUserRole(user) {
         this.$emit('change-user-role', user);

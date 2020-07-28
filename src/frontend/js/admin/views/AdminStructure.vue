@@ -109,11 +109,11 @@ import { Getter, Action } from 'vuex-class';
     },
 })
 export default class AdminStructure extends Vue {
-    @Getter('segments') segments;
-    @Action('setSegments') setSegments: (segments) => void;
-    @Action('deleteSegment') removeDeletedSegment: (id: number) => void;
-    @Action('addSection') addSection: (section) => void;
-    @Action('renameSegment') renameSegment: (payload: {
+    @Getter('segment/segments') segments;
+    @Action('segment/setSegments') setSegments: (segments) => void;
+    @Action('segment/deleteSegment') removeDeletedSegment: (id: number) => void;
+    @Action('segment/addSection') addSection: (section) => void;
+    @Action('segment/renameSegment') renameSegment: (payload: {
         id: number;
         name: string;
     }) => void;

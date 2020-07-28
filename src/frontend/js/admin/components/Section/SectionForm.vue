@@ -38,7 +38,7 @@ import { Action } from 'vuex-class';
 @Component
 export default class SectionForm extends Vue {
     @Prop(Number) segment: number;
-    @Action('addSection') addSectionToSegment: (segment: any) => void;
+    @Action('segment/addSection') addSectionToSegment: (segment: any) => void;
     $refs: {
         form: HTMLFormElement;
     };

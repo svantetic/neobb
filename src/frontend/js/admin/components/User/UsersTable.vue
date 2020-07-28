@@ -28,7 +28,7 @@
                             />
 
                             <BanButton
-                                v-if="!isAdmin(user)"
+                                v-if="isUser(user)"
                                 @show-ban-dialog="showBanDialog"
                                 :user="user"
                             />
@@ -41,7 +41,7 @@
         <ChangeRoleDialog
             :visible="changeRoleDialog"
             :user="selectedUser"
-            @change-user-role="promoteUser"
+            @change-user-role="promoteOrDowngrade"
             @hide-change-role-dialog="changeRoleDialog = false"
         />
         <!-- <DeactivateDialog /> -->
@@ -94,8 +94,8 @@ export default class UsersTable extends Vue {
     notificationText: string = '';
     selectedUser: any = {};
 
-    isAdmin(user) {
-        return user.role === 'ADMIN';
+    isUser(user) {
+        return user.role === 'USER';
     }
 
     disableEdit(role: string) {
@@ -121,7 +121,7 @@ export default class UsersTable extends Vue {
 
         this.notification = true;
         this.notificationText = `${user.username} banned`;
-        this.$emit('user-banned', user.username);
+        this.$emit('user-banned', id);
     }
 
     changeStatus(user) {
@@ -129,18 +129,19 @@ export default class UsersTable extends Vue {
         this.selectedUser = user;
     }
 
-    async promoteUser(user) {
+    async promoteOrDowngrade(user) {
         const { id, username, role } = user;
-        const response = await axios.post('/admin/user/promote', {
+        const actionType = role === 'USER' ? 'promote' : 'downgrade';
+        const response = await axios.post(`/admin/user/${actionType}`, {
             id,
             username,
             role,
         });
 
         this.selectedUser.role = response.data.user.role;
-        this.notificationText = `${this.selectedUser.username} promoted to ${this.selectedUser.role}`;
+        this.notificationText = response.data.message;
         this.notification = true;
-        this.$emit('user-promoted', response.data.user);
+        this.$emit('user-role-changed', response.data.user);
         this.changeRoleDialog = false;
     }
 }

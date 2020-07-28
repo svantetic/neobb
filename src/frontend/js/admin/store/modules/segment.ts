@@ -1,7 +1,8 @@
-import Vuex from 'vuex';
-import Vue from 'vue';
+import { Module } from 'vuex';
 
-Vue.use(Vuex);
+interface SegmentModuleState {
+    segments: any[];
+}
 
 const ADD_SEGMENT = 'ADD_SEGMENT';
 const REMOVE_SEGMENT = 'REMOVE_SEGMENT';
@@ -9,16 +10,11 @@ const UPDATE_SEGMENT = 'UPDATE_SEGMENT';
 const SET_SEGMENTS = 'SET_SEGMENTS';
 const ADD_SECTION_TO_SEGMENT = 'ADD_SECTIONT_TO_SEGMENT';
 
-const store = new Vuex.Store({
-    strict: true,
+export const segment: Module<SegmentModuleState, any> = {
+    namespaced: true,
     state: {
         segments: [],
-        notification: {
-            visible: false,
-            text: '',
-        },
     },
-
     getters: {
         segments(state) {
             return state.segments;
@@ -94,6 +90,4 @@ const store = new Vuex.Store({
             commit(ADD_SECTION_TO_SEGMENT, section);
         },
     },
-});
-
-export default store;
+};

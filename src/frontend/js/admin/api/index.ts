@@ -73,6 +73,15 @@ class API {
             return error;
         }
     }
+
+    public async getUsers(): Promise<any> {
+        try {
+            const response = await axios.get('/admin/users');
+            return response.data.users;
+        } catch (error) {
+            console.error(error);
+        }
+    }
 }
 
 export default new API(axios);

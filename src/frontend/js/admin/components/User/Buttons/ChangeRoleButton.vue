@@ -5,7 +5,7 @@
         :disabled="isDisabled(user.role)"
         @click="showDialog"
     >
-        {{ buttonText }}
+        {{ roleAction }}
     </v-btn>
 </template>
 
@@ -13,17 +13,16 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Prop } from 'vue-property-decorator';
+import { UserRoleMixin } from '../mixins';
 
-@Component
+@Component({
+    mixins: [UserRoleMixin],
+})
 export default class ChangeRoleButton extends Vue {
     @Prop() user;
 
     isDisabled(role: string) {
         return role === 'ADMIN';
-    }
-
-    get buttonText() {
-        return this.user.role === 'ADMIN' ? 'Downgrade' : 'Promote';
     }
 
     showDialog() {

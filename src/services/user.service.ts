@@ -79,24 +79,34 @@ export class UserService {
         return this.userRepository.manager.save(userToActivate);
     }
 
-    private getPromotedRole(role: UserRole): UserRole {
+    private getNewRole(role: UserRole): UserRole {
         switch (role) {
             case UserRole.USER:
                 return UserRole.MODERATOR;
             case UserRole.MODERATOR:
-                return UserRole.ADMIN;
+                return UserRole.USER;
             default:
-                return UserRole.ADMIN;
+                return UserRole.USER;
         }
     }
 
-    async promoteUser(user: User): Promise<User> {
+    async promote(user: User): Promise<User> {
         const existingUser = await this.findById(user.id);
-        if (!existingUser || (await existingUser.username) !== user.username) {
+        if (!existingUser || existingUser.username !== user.username) {
             throw new NotFoundException();
         }
 
-        existingUser.role = this.getPromotedRole(user.role);
+        existingUser.role = this.getNewRole(user.role);
+        return this.userRepository.manager.save(existingUser);
+    }
+
+    async downgrade(user: User): Promise<User> {
+        const existingUser = await this.findById(user.id);
+        if (!existingUser || existingUser.username !== user.username) {
+            throw new NotFoundException();
+        }
+
+        existingUser.role = this.getNewRole(user.role);
         return this.userRepository.manager.save(existingUser);
     }
 

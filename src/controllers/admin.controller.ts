@@ -89,9 +89,26 @@ export class AdminController {
         if (!user || !user.username || !user.id || !user.role) {
             throw new BadRequestException('Bad request');
         }
-        const { id, role } = await this.userService.promoteUser(user);
+        const { id, role } = await this.userService.promote(user);
         return {
             message: 'User promoted',
+            user: {
+                id,
+                role,
+            },
+        };
+    }
+
+    @Post('/user/downgrade')
+    async downgrade(
+        @Body() user: User,
+    ): Promise<{ message: string; user: UserPromotionResponse }> {
+        if (!user || !user.username || !user.id || !user.role) {
+            throw new BadRequestException('Bad request');
+        }
+        const { id, role } = await this.userService.downgrade(user);
+        return {
+            message: 'User dowgraded',
             user: {
                 id,
                 role,
