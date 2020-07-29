@@ -1,5 +1,11 @@
-import { AxiosAdapter, AxiosInstance, ResponseType } from 'axios';
+import {
+    AxiosAdapter,
+    AxiosInstance,
+    ResponseType,
+    AxiosResponse,
+} from 'axios';
 import axios from 'axios';
+import { UserRolePayload } from '../components/User/interfaces';
 
 class API {
     private axios: AxiosInstance;
@@ -80,6 +86,44 @@ class API {
             return response.data.users;
         } catch (error) {
             console.error(error);
+        }
+    }
+
+    public async banUser(
+        id: number,
+    ): Promise<
+        AxiosResponse<{
+            message: string;
+            user: { id: number; username: string };
+        }>
+    > {
+        try {
+            const response = await axios.post('/admin/user/ban', {
+                id,
+            });
+
+            return response;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    public async changeRole(
+        id: number,
+        username: string,
+        role: string,
+    ): Promise<AxiosResponse<{ message: string; user: UserRolePayload }>> {
+        try {
+            const actionType = role === 'USER' ? 'promote' : 'downgrade';
+            const response = await axios.post(`/admin/user/${actionType}`, {
+                id,
+                username,
+                role,
+            });
+
+            return response;
+        } catch (error) {
+            console.log(error);
         }
     }
 }
