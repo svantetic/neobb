@@ -1,7 +1,9 @@
 import { Module } from 'vuex';
+import { UserRolePayload } from '../../components/User/interfaces';
 
 const SET_USERS = 'SET_USERS';
 const DELETE_USER = 'DELETE_USER';
+const CHANGE_ROLE = 'CHANGE_ROLE';
 
 interface UserModuleState {
     users: any[];
@@ -30,6 +32,18 @@ export const user: Module<UserModuleState, any> = {
                 state.users.splice(existing, 1);
             }
         },
+
+        [CHANGE_ROLE](state, user: UserRolePayload) {
+            const userToChangeRole = state.users.find(
+                existingUser => existingUser.id === user.id,
+            );
+
+            if (!userToChangeRole) {
+                return;
+            }
+
+            userToChangeRole.role = user.role;
+        },
     },
 
     actions: {
@@ -39,6 +53,10 @@ export const user: Module<UserModuleState, any> = {
 
         deleteUser({ commit }, id: number) {
             commit(DELETE_USER, id);
+        },
+
+        changeRole({ commit }, user: UserRolePayload) {
+            commit(CHANGE_ROLE, user);
         },
     },
 };
