@@ -6,7 +6,7 @@ import UsersView from './views/UsersView.vue';
 const Router = new VueRouter({
     routes: [
         {
-            path: '/dashboard',
+            path: '/',
             component: AdminDashboard,
         },
         {
