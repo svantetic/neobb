@@ -35,9 +35,9 @@
                                     @click.stop="applyRename"
                                     >Apply</v-btn
                                 >
-                                <v-btn text @click.stop="hideRename"
-                                    >Cancel</v-btn
-                                >
+                                <v-btn text @click.stop="hideRename">
+                                    Cancel
+                                </v-btn>
                             </template>
                         </v-col>
                         <v-col cols="2">
@@ -46,8 +46,9 @@
                                 text
                                 @click.stop="showDeleteSegmentDialog(segment)"
                                 color="red"
-                                >Delete</v-btn
                             >
+                                Delete
+                            </v-btn>
                         </v-col>
                     </v-row>
                 </v-expansion-panel-header>
