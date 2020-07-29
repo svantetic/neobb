@@ -73,6 +73,9 @@ import DeactivateDialog from './Dialogs/DeactivateDialog.vue';
 import BanButton from './Buttons/BanButton.vue';
 import BanDialog from './Dialogs/BanDialog.vue';
 import axios from 'axios';
+import API from '../../api';
+import { Action } from 'vuex-class';
+import { UserRolePayload } from './interfaces';
 
 @Component({
     components: {
@@ -94,6 +97,9 @@ export default class UsersTable extends Vue {
     notificationText: string = '';
     selectedUser: any = {};
 
+    @Action('user/deleteUser') deleteUser: (id: number) => void;
+    @Action('user/changeRole') changeRole: (user: UserRolePayload) => void;
+
     isUser(user) {
         return user.role === 'USER';
     }
@@ -114,14 +120,13 @@ export default class UsersTable extends Vue {
 
     async banUser(user) {
         this.banDialogVisible = false;
-        const { id } = user;
-        const response = await axios.post('/admin/user/ban', {
-            id,
-        });
+        const response = await API.banUser(user.id);
 
-        this.notification = true;
-        this.notificationText = `${user.username} banned`;
-        this.$emit('user-banned', id);
+        if (response) {
+            this.notification = true;
+            this.notificationText = `${response.data.message}`;
+            this.deleteUser(response.data.user.id);
+        }
     }
 
     changeStatus(user) {
@@ -131,18 +136,16 @@ export default class UsersTable extends Vue {
 
     async promoteOrDowngrade(user) {
         const { id, username, role } = user;
-        const actionType = role === 'USER' ? 'promote' : 'downgrade';
-        const response = await axios.post(`/admin/user/${actionType}`, {
-            id,
-            username,
-            role,
-        });
 
-        this.selectedUser.role = response.data.user.role;
-        this.notificationText = response.data.message;
-        this.notification = true;
-        this.$emit('user-role-changed', response.data.user);
-        this.changeRoleDialog = false;
+        const response = await API.changeRole(id, username, role);
+
+        if (response) {
+            this.selectedUser.role = response.data.user.role;
+            this.notificationText = response.data.message;
+            this.notification = true;
+            this.changeRole(response.data.user);
+            this.changeRoleDialog = false;
+        }
     }
 }
 </script>
