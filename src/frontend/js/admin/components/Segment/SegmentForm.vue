@@ -8,19 +8,37 @@
             @click="active = true"
             v-if="!active"
             color="primary"
+            class="fab-button"
         >
             <v-icon>
                 add
             </v-icon>
         </v-btn>
 
-        <v-form ref="form" v-else v-model="valid">
-            <v-text-field v-model="newSegment.name" label="Name" />
-            <v-btn @click="createSegment" color="secondary">Create</v-btn>
-            <v-btn @click="active = false">Cancel</v-btn>
-        </v-form>
+        <v-dialog width="400" v-else :value="active">
+            <v-card>
+                <v-card-title class="headline">Add segment</v-card-title>
+                <v-form ref="form" @submit="createSegment" v-model="valid">
+                    <v-card-text>
+                        <v-text-field v-model="newSegment.name" label="Name" />
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn type="submit" color="secondary">Create</v-btn>
+                        <v-btn text @click="active = false">Cancel</v-btn>
+                    </v-card-actions>
+                </v-form>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
+
+<style scoped>
+.fab-button {
+    bottom: 100px;
+    margin-bottom: 50px;
+}
+</style>
 
 <script lang="ts">
 import Vue from 'vue';
@@ -42,7 +60,7 @@ export default class SegmentForm extends Vue {
         name: '',
     };
 
-    @Action('addSegment') addSegment: (segment: any) => void;
+    @Action('segment/add') addSegment: (segment: any) => void;
 
     async createSegment() {
         this.$refs.form.validate();

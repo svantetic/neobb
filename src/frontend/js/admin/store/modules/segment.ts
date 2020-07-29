@@ -73,7 +73,7 @@ export const segment: Module<SegmentModuleState, any> = {
             commit(UPDATE_SEGMENT, payload);
         },
 
-        addSegment({ commit }, segment) {
+        add({ commit }, segment) {
             const newSegment = segment.hasOwnProperty('sections')
                 ? {
                       ...segment,

@@ -66,7 +66,7 @@
                 </v-row>
             </v-container>
         </v-main>
-        <v-footer inset app>
+        <v-footer app>
             <span>NeoBB &copy; {{ new Date().getFullYear() }}</span>
         </v-footer>
     </v-app>

@@ -82,10 +82,7 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
-
-        <v-snackbar color="success" v-model="notification" timeout="2000">
-            {{ notificationText }}
-        </v-snackbar>
+        <Notification />
     </div>
     <div v-else>
         Loading...
@@ -98,6 +95,7 @@ import Component from 'vue-class-component';
 import Section from '../components/Section/Section.vue';
 import SectionForm from '../components/Section/SectionForm.vue';
 import SegmentForm from '../components/Segment/SegmentForm.vue';
+import Notification from '../components/Common/Notification.vue';
 import axios from 'axios';
 import API from '../api';
 import { Getter, Action } from 'vuex-class';
@@ -107,6 +105,7 @@ import { Getter, Action } from 'vuex-class';
         Section,
         SectionForm,
         SegmentForm,
+        Notification,
     },
 })
 export default class AdminStructure extends Vue {
@@ -118,6 +117,8 @@ export default class AdminStructure extends Vue {
         id: number;
         name: string;
     }) => void;
+    @Action('notification/show') showNotification: (text: string) => void;
+
     panel: number[] = [];
     sectionForm: boolean = false;
     loading: boolean = false;
@@ -136,8 +137,6 @@ export default class AdminStructure extends Vue {
             id: null,
         },
     };
-    notification: boolean = false;
-    notificationText: string = '';
     newSection = {
         name: '',
         description: '',
@@ -174,16 +173,14 @@ export default class AdminStructure extends Vue {
         try {
             const { id, segmentName } = this.rename;
             const response = await API.renameSegment(id, segmentName);
-            this.notification = true;
-            this.notificationText = 'Segment renamed';
+            this.showNotification('Segment renamed');
             this.renameSegment({
                 id,
                 name: segmentName,
             });
             this.hideRename();
         } catch (error) {
-            this.notification = true;
-            this.notificationText = error;
+            this.showNotification(error);
         }
     }
 
@@ -200,12 +197,10 @@ export default class AdminStructure extends Vue {
         const { id, name } = this.deleteSegmentDialog.segment;
         try {
             const deleted = await API.deleteSegment(id, name);
-            this.notification = true;
-            this.notificationText = 'Segment deleted';
+            this.showNotification('Segment deleted');
             this.removeDeletedSegment(id);
         } catch (error) {
-            this.notification = true;
-            this.notificationText = error.message;
+            this.showNotification(error);
         }
         this.hideDeleteSegmentDialog();
     }

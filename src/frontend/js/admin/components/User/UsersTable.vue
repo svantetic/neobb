@@ -51,14 +51,7 @@
             @ban-user="banUser"
             @hide-ban-dialog="banDialogVisible = false"
         />
-        <v-snackbar
-            v-if="selectedUser.username"
-            color="success"
-            v-model="notification"
-            timeout="2000"
-        >
-            {{ notificationText }}
-        </v-snackbar>
+        <Notification />
     </div>
 </template>
 
@@ -72,6 +65,7 @@ import ChangeRoleDialog from './Dialogs/ChangeRoleDialog.vue';
 import DeactivateDialog from './Dialogs/DeactivateDialog.vue';
 import BanButton from './Buttons/BanButton.vue';
 import BanDialog from './Dialogs/BanDialog.vue';
+import Notification from '../Common/Notification.vue';
 import axios from 'axios';
 import API from '../../api';
 import { Action } from 'vuex-class';
@@ -85,6 +79,7 @@ import { UserRolePayload } from './interfaces';
         DeactivateDialog,
         BanButton,
         BanDialog,
+        Notification,
     },
 })
 export default class UsersTable extends Vue {
@@ -92,13 +87,11 @@ export default class UsersTable extends Vue {
     statusDialog: boolean = false;
     changeRoleDialog: boolean = false;
     banDialogVisible: boolean = false;
-
-    notification: boolean = false;
-    notificationText: string = '';
     selectedUser: any = {};
 
     @Action('user/deleteUser') deleteUser: (id: number) => void;
     @Action('user/changeRole') changeRole: (user: UserRolePayload) => void;
+    @Action('notification/show') showNotification: (text: string) => void;
 
     isUser(user) {
         return user.role === 'USER';
@@ -123,8 +116,7 @@ export default class UsersTable extends Vue {
         const response = await API.banUser(user.id);
 
         if (response) {
-            this.notification = true;
-            this.notificationText = `${response.data.message}`;
+            this.showNotification(response.data.message);
             this.deleteUser(response.data.user.id);
         }
     }
@@ -141,8 +133,7 @@ export default class UsersTable extends Vue {
 
         if (response) {
             this.selectedUser.role = response.data.user.role;
-            this.notificationText = response.data.message;
-            this.notification = true;
+            this.showNotification(response.data.message);
             this.changeRole(response.data.user);
             this.changeRoleDialog = false;
         }
