@@ -38,6 +38,7 @@ export class RegistrationService {
             err => {
                 if (err) throw err;
                 console.log('email saved');
+                console.log(token);
             },
         );
     }
