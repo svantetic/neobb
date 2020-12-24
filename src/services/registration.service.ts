@@ -32,6 +32,7 @@ export class RegistrationService {
       token: ${token}
     `;
 
+    try {
         fs.writeFile(
             join(__dirname, `../../src/emails/${user.username}.txt`),
             content,
@@ -41,6 +42,11 @@ export class RegistrationService {
                 console.log(token);
             },
         );
+    } catch (error) {
+        console.log(error);
+        console.log('Could not create email');
+    }
+
     }
 
     public async validateToken(token: string): Promise<false | ToBeActivated> {
